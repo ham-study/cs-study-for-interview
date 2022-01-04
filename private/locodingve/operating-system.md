@@ -8,7 +8,7 @@
 <br>
 
 ## 운영체제소개
----
+
 
 ### 운영체제 정의
 - 하드웨어와 응용 프로그램 사이에서 인터페이스 역할을 하고 시스템의 자원과 동작을 관리하는 시스템 소프트웨어입니다.
@@ -47,7 +47,7 @@
 <br>
 
 ## 운영체제구조
----
+
 ![image](https://user-images.githubusercontent.com/88185304/147988857-99e207d1-7755-43d7-aa92-a34a69a91877.png)
 ![image](https://user-images.githubusercontent.com/88185304/147992446-226ee454-d54b-42a9-9d9c-10a0f87d192d.png)
 
@@ -76,6 +76,6 @@
 </br>
 
 ## 출처
----
+
 
 - https://www.youtube.com/watch?v=EdTtGv9w2sA&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN
