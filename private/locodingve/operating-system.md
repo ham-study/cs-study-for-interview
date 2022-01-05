@@ -2,8 +2,9 @@
 
 🗂 Contents
 
-1. [운영체제소개](#-운영체제소개)
-2. [운영체제구조](#-운영체제구조)
+1. [운영체제소개](#운영체제소개)
+2. [운영체제구조](#운영체제구조)
+3. [프로세스](#프로세스)
 
 <br>
 
@@ -72,10 +73,116 @@
 - 커널이 제공하는 기능 중에서 사용자가 사용할 수 있는 기능들을 모아놓은 것들입니다.
 
 
+## 프로세스
+
+### 프로세스 개념
+
+#### 1. 프로세스 VS 작업(Job)
+cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
+![image](https://user-images.githubusercontent.com/88185304/148149085-47c2cc7d-0b5c-40c2-9ea3-fd0c9bb0e7f9.png)
+- 프로세스
+    - 실행을 위해 시스템(커널)에 등록된 작업
+    - 시스템 성능 향상을 위해 커널에 의해 관리되는 작업
+
+- Job 
+    - 실행할 프로그램 + 데이터
+    - 컴퓨터 시스템에 실행 요청 전 상태
+
+#### 2. 프로세스 정의
+- 실행중인 프로그램
+- 커널에 등록되고 커널의 관리하에 있는 작업
+- 각종 자원들을 요청하고 할당 받을 수 있는 개체
+- 프로세스 관리 븍록(PCB)을 할당 받은 개체
+
+
+### 프로세스 상태
+
+프로세스 상탱는 자원 간의 상호작용에 의해 결정이 된다.
+
+![image](https://user-images.githubusercontent.com/88185304/148150494-5366408d-3064-4125-b1e8-e9cf232bcbf2.png)
+
+- Created State
+![image](https://user-images.githubusercontent.com/88185304/148150764-78e9049b-53cb-45b4-bb06-c49fccfab7b3.png)
+    - 작업을 커널에 등록되었으며, PCB 할당 및 프로세스 생성이 된 상태
+
+- Ready State
+![image](https://user-images.githubusercontent.com/88185304/148150979-bc27f004-3af0-4a5f-a31d-bf6cde130ff0.png)
+    - 프로세서 외에 다른 모든 자원을 할당 받은 상태
+    - 프로세서 할당 대기 상태
+    - 즉시 실행 가능 상태
+
+- Running State
+![image](https://user-images.githubusercontent.com/88185304/148151152-a63b2ed2-49df-471d-81b8-079a1cd1681e.png)
+    - 프로세서와 필요한 자원을 모두 할당 받은 상태
+        - preemption : 프로세서 스케쥴링을 통해 Running state에서 Ready state으로 변경
+        - Block/Sleep : I/O 등 자원 할당 요청으로 Running state에서 Asleep state로 변경
+
+- Blocked/Asleep state
+![image](https://user-images.githubusercontent.com/88185304/148151705-ff7571bf-b296-4130-860a-a3f4b57452fd.png)
+    - 프로세서 외에 다른 자원을 기다리는 상태
+        - 자원 할당은 system call에 의해 이루어짐
+
+- Suspended State
+![image](https://user-images.githubusercontent.com/88185304/148151897-95198fac-b050-47db-a9a7-bf56c70ed37d.png)
+    - 메모리를 할당 받지 못한(빼앗긴) 상태
+        - Memory image를 swap device에 보관 (swap device: 프로그램 정보 저장을 위한 특별한 파일 시스템) 
+
+- Teminated/Zombie State
+![image](https://user-images.githubusercontent.com/88185304/148152186-56e0de74-8791-4612-ace3-840770120eb5.png)
+    - 프로세스 수행이 끝난 상태
+    - 모든 자원 반납 후, 커널 내에서 (추후 프로세스 관리를 위해 정보 수집 목적으로) 일부 PCB 정보만 남아 있는 상태
+
+### 프로세스 제어 블록
+![image](https://user-images.githubusercontent.com/88185304/148149869-226e4642-8998-48d6-ad5b-33b61f11cc41.png)
+
+- PCB 
+    - 커널 공간 내에 존재하며, OS가 프로세스 관리에 필요한 정보 저장
+    - 프로세스가 생성될 때 생성됨
+- PCB가 관리하는 정보
+    - PID(Process Identification Number): 프로세스 고유 식별 번호
+    - 스케줄링 정보 : 프로세스 우선순위 등과 같은 스케줄링 관련 정보들
+    - 스로세스 상태 : 자원 할당, 요청 정보 등
+    - 메모리 관리 정보 : Page table, Segment table
+    - 입출력 상태 정보 : 할당 받은 입출력 장치, 파일 등에 대한 정보 등
+    - 문맥 저장 영역 (context save area) : 프로세스의 레지스터 상태를 저장하는 공간 등
+    - 계정 정보 : 자원 사용 시간 등을 관리 
+
+    cf. PCB 정보는 os 마다 다르며, PCB 참조 및 갱신 속도는 os 의 성능을 결정하는 중요한 요소 중 하나가 된다.
+
+### 프로세스 큐(Queue)
+프로세스는 수행하면서 상태가 여러 번 변하는데 이에 따라 서비스를 받아야하는 곳이 다르다. 그리고 프로세스는 일반적으로 여러 개가 한 번에 수행되므로 그에 따른 순서가 필요하다. 이러한 순서를 대기하는 곳을 큐(queue)라고 부른다.
+
+![image](https://user-images.githubusercontent.com/88185304/148152771-3e5fa5c6-c1ea-4a83-8b95-2d06063ceb4f.png)
+- Job Queue: 하드디스크에 있는 프로그램이 실행되기 위해 메인 메모리의 할당 순서를 기다리는 큐이다.
+- Ready Queue: CPU 점유 순서를 기다리는 큐이다.
+- Device Queue: I/O를 하기 위한 여러 장치가 있는데, 각 장치를 기다리는 큐가 각각 존재한다.
+
+위와 같이 여러 큐가 존재하는데, 각 큐 내부에 저장된 실제 데이터는 각 프로세스의 PCB가 저장되어 있다.
+
+### 프로세스 문맥 교환
+![image](https://user-images.githubusercontent.com/88185304/148153031-96a023a1-c22b-460d-8011-8b77b8110b56.png)
+
+- context : 프로세스와 관련전 정보들의 집합
+    - CPU register context 는 CPU 내에 저장되어있음.
+    - Code & Data, Stack, PCB는 메모리 내에 저장되어 있음.
+
+- context saving : 현재 프로세스의 Register context를 저장하는 작업
+
+- context restoring : register context를 프롯세스로 복구하는 작업
+
+- context switching : 실행 중인 프로세스의 context를 저장하고, 앞으로 실행할 프로세스의 context를 복구하는 일 (커널의 개입으로 이루어짐)
+
+
+
+
+
+
+
 </br>
 </br>
 
 ## 출처
 
-
 - https://www.youtube.com/watch?v=EdTtGv9w2sA&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN
+- https://www.youtube.com/watch?v=jZuTw2tRT7w&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=5
+- https://velog.io/@codemcd/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9COS-5.-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EA%B4%80%EB%A6%AC
