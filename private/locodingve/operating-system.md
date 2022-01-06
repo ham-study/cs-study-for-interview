@@ -5,8 +5,9 @@
 1. [운영체제소개](#운영체제소개)
 2. [운영체제구조](#운영체제구조)
 3. [프로세스](#프로세스)
+4. [스레드](#스레드)
 
-<br>
+<br><br>
 
 ## 운영체제소개
 
@@ -45,7 +46,7 @@
 
 
 
-<br>
+<br><br>
 
 ## 운영체제구조
 
@@ -72,6 +73,8 @@
 
 - 커널이 제공하는 기능 중에서 사용자가 사용할 수 있는 기능들을 모아놓은 것들입니다.
 
+<br>
+<br>
 
 ## 프로세스
 
@@ -151,7 +154,6 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 
 ### 프로세스 큐(Queue)
 프로세스는 수행하면서 상태가 여러 번 변하는데 이에 따라 서비스를 받아야하는 곳이 다르다. 그리고 프로세스는 일반적으로 여러 개가 한 번에 수행되므로 그에 따른 순서가 필요하다. 이러한 순서를 대기하는 곳을 큐(queue)라고 부른다.
-
 ![image](https://user-images.githubusercontent.com/88185304/148152771-3e5fa5c6-c1ea-4a83-8b95-2d06063ceb4f.png)
 - Job Queue: 하드디스크에 있는 프로그램이 실행되기 위해 메인 메모리의 할당 순서를 기다리는 큐이다.
 - Ready Queue: CPU 점유 순서를 기다리는 큐이다.
@@ -165,24 +167,99 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 - context : 프로세스와 관련전 정보들의 집합
     - CPU register context 는 CPU 내에 저장되어있음.
     - Code & Data, Stack, PCB는 메모리 내에 저장되어 있음.
-
 - context saving : 현재 프로세스의 Register context를 저장하는 작업
-
 - context restoring : register context를 프롯세스로 복구하는 작업
-
 - context switching : 실행 중인 프로세스의 context를 저장하고, 앞으로 실행할 프로세스의 context를 복구하는 일 (커널의 개입으로 이루어짐)
 
+<br><br>
+
+## 스레드
+멀티프로세싱 방식은 CPU에서 여러 프로세스를 스케쥴링 알고리즘을 통해 로테이션으로 처리됩니다. 이때 동작중인 프로세스가 대기 상태가 되면서 context 정보를 저장하고, 대기하고 있던 다음 순번의 프로레서가 동작하면서 이전에 보관했던 프로세서의 context를 복구하게 됩니다. 이를 context switching이라고 하는데, 프로세스는 각각 독립된 메모리 영역이다보니 캐쉬 메모리 초기화 등 꽤나 무거운 작업이 진행되어 오버헤드가 날 가능성이 커집니다. 이를 해결하기 위해 사용되는 개념이 스레드입니다. 
+
+### 스레드 개념
+- 스레드(thread)는 어떠한 프로그램 내에서, 특히 프로세스 내에서 실행되는 흐름의 단위
+- 일반적으로 한 프로그램은 하나의 스레드를 가지고 있지만, 프로그램 환경에 따라 둘 이상의 스레드를 동시에 실행할 수 있으며, 이러한 실행 방식을 멀티스레드(multithread)라고 함.
+- 프로세서 활용의 기본 단위
+- 제어 요소 외 코드, 데이터 및 자원들을 프로세스 내 다른 스레드들과 공유
+- 구성요소 : Thread ID, Register set(PC, SP 등), Stack
+
+< 개념 이해를 위한 이미지 >
+![image](https://user-images.githubusercontent.com/88185304/148311902-b54ba355-aa9c-434c-92bb-401b9001182f.png)
+
+< 메모리 관점으로 스레드 이해를 위한 이미지 >
+![image](https://user-images.githubusercontent.com/88185304/148307176-00233f2d-4f03-47e4-9771-39b2c4e87c36.png)
+
+
+### 멀티 프로세스 VS 멀티 스레드
+- 멀티프로세스
+
+![image](https://user-images.githubusercontent.com/88185304/148309284-be257cee-0832-4fdb-bce8-f057488ead18.png)
+
+    - 프로그램 실행시 Code, Data, Stack, Heap 구조로 되어있는 독립된 메모리 영역을 할당받습니다. 
+    - 그러나 빈번한 context switching으로 오버헤드가 발생할 가능성이 커집니다.
+
+- 멀티스레드
+
+![image](https://user-images.githubusercontent.com/88185304/148309314-d5717a80-f613-4770-8494-aeacbb5309fe.png)
+
+    - 스레드는 프로세스 내에서 각각 stack만 따로 할당을 받고, code, Data, Heap 영역을 공유합니다. 
 
 
 
+### 멀티스레드 장단점
+- 장점 
+    - 사용자 응담성 (Responseiveness) : 일부 스레드의 처리가 지연되어도, 다른 스레드는 작업을 계속 처리
+    - 자원 공유 (Resource Sharing) : 자원을 공유해서 효율성 증가 (커널 개임을 피할 수 있음)
+    - 경제성 (Economy) : 프로세스의 생성 및 context swich에 비해 효율적
+    - 멀티 프로세서(multi-processor) 활용 : 병렬처리를 통해 성능 향상
+
+- 단점 
+    - 임계 영역(Critical Section, 둘 이상의 스레드가 동시에 실행하면 문제를 일으키는 코드 블록): 공유하는 자원에 동시에 접근하는 경우, 프로세스와는 달리 스레드는 데이터와 힙 영역을 공유하기 때문에 어떤 스레드가 다른 스레드에서 사용 중인 변수나 자료구조에 접근하여 엉뚱한 값을 읽어오거나 수정할 수 있음. 따라서 동기화가 필요!
+    - 디버깅이 다소 까다로워진다. (버그 생성될 가능성 증가)
+
+
+### 멀티 스레드 모델
+- 다대일(n:1) 모델 
+    - 사용자 수준 스레드
+- 일대일(1:1) 모델 
+    - 커널 수준 스레드
+- 다대다(n:m) 모델
+    - n > m 
+    - 혼합형 스레드
+
+
+### 사용자 레벨 스레드 커널 VS 레벨 스레드 VS 혼합형 스레드
+
+![image](https://user-images.githubusercontent.com/88185304/148310730-7ff76661-7ce7-43f8-bf7f-c607df47704a.png)
+
+- 사용자 레벨 스레드
+
+    ![image](https://user-images.githubusercontent.com/88185304/148311080-f766144d-1b10-4e2f-88c9-ae7314c6dd42.png)
+
+    - 사용자 영역의 스레드 라이브러리로 구현된다. 스레드 라이브러리는 통해 스레드 생성 및 스케줄링 등을 수행한다. 예를 들면 java thread API 등이 있다.
+    - 커널은 스레드의 존재를 모른다. 그래서 커널의 개입을 받지 않을 수 있어 생성 및 관리의 부하가 적다. 그러나 커널은 하나의 프로세스 단위로 자원을 할당하기 때문에 하나의 스레드가 block 상태가 되면, 모든 스레드가 대기상태에 있게 된다. (single-thread kernel의 경우)
+
+- 커널 수준 스레드
+
+    ![image](https://user-images.githubusercontent.com/88185304/148311769-6f2cd03d-dede-43dd-8f8c-b8d0a01398d1.png)
+    
+    - OS(kernel)가 직접 관리한다. 그래서 커널 영역에서 스레드의 생성 및 관리를 수행하게 된다. 이 과정에서 context switching 등으로 오버헤드가 발생할 가능성이 커진다.
+    - 커널이 각 스레드를 개벌적으로 관리를 하여, 프로세스 내 스레드들이 병렬 수행이 가능할 수 있게 해 준다. 그래서 하나의 스레드가 block 상태가 되어도 다른 스레드는 계속 작업 수행 가능하다.
+
+- 혼합형 스레드
+    - n개 사용자 수준 스레드 - m개의 커널 스레드 (n>m) : 사용자가 원하는 수만큼 스레드를 사용할 수 있다. 그리고 커널 스레드는 자신에게 할당된 하나의 사용자 스레드가 block 상태가 되어도, 다른 스레드의 수행이 가능하다. 
+    - 효율적이면서도 유연하다. 
 
 
 
-</br>
-</br>
+</br></br>
 
 ## 출처
 
 - https://www.youtube.com/watch?v=EdTtGv9w2sA&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN
 - https://www.youtube.com/watch?v=jZuTw2tRT7w&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=5
 - https://velog.io/@codemcd/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9COS-5.-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EA%B4%80%EB%A6%AC
+- https://ko.wikipedia.org/wiki/%EC%8A%A4%EB%A0%88%EB%93%9C_(%EC%BB%B4%ED%93%A8%ED%8C%85)
+- https://eun-jeong.tistory.com/20
+- https://magi82.github.io/process-thread/
+- https://www.crocus.co.kr/1255
