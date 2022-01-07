@@ -6,6 +6,7 @@
 2. [운영체제구조](#운영체제구조)
 3. [프로세스](#프로세스)
 4. [스레드](#스레드)
+5. [CPU스케줄링](#CPU스케줄링)
 
 <br><br>
 
@@ -278,6 +279,81 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
     - 효율적이면서도 유연하다. 
 
 
+
+# CPU스케줄링
+
+스케줄링이 왜 필요한가? 
+- 여러 개의 프로세스가 시스템 내 존재하고있기 떄문에(다중프로그래밍) 자원을 할당한 프로세스를 선택하야 합니다. 이때 스케줄링이 필요합니다. 
+
+### 1. 스케줄링 개념
+
+#### 1-1. 목적 
+- 시스템 성능을 향상
+    - 성능 향상을 위해서는 목적에 맞는 지표를 고려하여 스케줄링 기법을 선택하여야 함.
+    - 성능 지표로는 응답시간, 작업처리량, 자원활용도 등을 들 수 있다. 
+#### 1-2. 성능지표
+
+![image](https://user-images.githubusercontent.com/88185304/148482772-d89358aa-037a-4340-8a1a-bfa5b5722cae.png)
+
+- 대기시간 (Waiting Time):
+- 응답시간 (Response Time):
+- 반환시간 (Turn-around Time):
+
+#### 1-3. 스케줄링 기준
+- 스케줄링 기준 : 스케줄링 기법이 고려하는 항목들을 의미
+- 기준
+    - 프로세스의 특성 : I/O-bounded or compute-bounded
+    - 시스템 특징 : batch system or interactive system
+    - 프로세스의 긴급성 : Hard or Soft real time
+    - 프로세스 우선순위
+    - 프로세스 총 실행시간 
+    ...
+
+### 2. 스케줄링 레벨
+
+
+#### 2-1. 장기 스케줄링(Long-term scheduling)
+- Job scheduling : 커널에 등록할 작업(Job)을 결정
+- 시스템 내에 프로세스 수를 조절함 (다중프로그래밍 정도를 조절)
+- 특정 프로세스가 놀 수 있기 때문에, I/O-bounded와 compute-bounded 프로세스들을 잘 섞에서 선택해야 함.
+
+#### 2-2. 중기 스케줄링(Mid-term scheduling)
+- Memory allocation
+
+#### 2-3. 단기 스케줄링(Short-term scheduling)
+- process scheduling : 프로세서를 할당한 프로세스를 결정
+- 가장 빈번하게 발생하기 때문에 매우 빨라야 함.
+
+![image](https://user-images.githubusercontent.com/88185304/148484023-38df761e-aa51-43ab-a6ff-fb62ac7085e1.png)
+
+<br>
+
+### 3. 스케줄링 정책
+
+#### 3-1. premptive/non-preemptive
+- premptive scheduling
+    - 타인에 의해 자원을 빼앗길 수 있음
+    - context switch overhead가 발생 가능성이 큼
+    - time-sharing system, real-time system 등에 적합
+
+-  non-preemptive scheduling
+    - 할당 받은 자원을 스스로 반남할 때까지 사용 
+    - context switch overhead 발생 가능성이 적음
+    - 잦은 우선순위 역전, 평균 응답 시간 증가
+    - 예로는 system call, I/O 등
+
+#### 3-2. priority
+- 프로세스의 중요도를 의미함
+- 종류
+    - 정적 우선순위
+        - 프로세스 생성시 결정된 priority가 유지됨
+        - 구현이 쉽고, overhead 가능성이 적음
+        - 시스템 환경 변화에 대한 대응이 어려움
+
+    - 동적 우선순위
+        - 프로세스의 상태 변화에 따라 priority 변경
+        - 구현이 복잡, priority 재계산으로 overhead 가능성이 큼
+        - 시스템 환경 변화에 유연한 대응이 가능
 
 </br></br>
 
