@@ -7,6 +7,7 @@
 3. [프로세스](#프로세스)
 4. [스레드](#스레드)
 5. [CPU스케줄링](#CPU스케줄링)
+6. [스케줄링알고리즘](#스케줄링알고리즘)
 
 <br><br>
 
@@ -356,6 +357,136 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
         - 구현이 복잡, priority 재계산으로 overhead 가능성이 큼
         - 시스템 환경 변화에 유연한 대응이 가능
 
+
+<br><br>
+
+# 스케줄링알고리즘
+
+![image](https://user-images.githubusercontent.com/88185304/148717476-1353a94e-14a7-46d5-8b3d-c82faa9b99a8.png)
+
+
+<br>
+
+### FCRS(First-Come-First-Service)
+
+![image](https://user-images.githubusercontent.com/88185304/148715663-eeff6a22-e3b5-4f97-a354-092651f870c7.png)
+
+- 사용하는 정책 : Non-preemptive scheduling
+- 스케줄링 기준 (Criteria)
+    - 도착시간 (ready queue 기준)
+    - 먼저 도착한 프로세스를 먼저 처리
+- 적합한 시스템 
+    - batch system, interactive system
+- 장점 
+    - 자원을 효율적으로 사용 가능(먼저 도착한 프로세스를 먼저 처리하여, 스케줄링 오버해드가 낮음 그리고 cpu가 쉬지 않고 계속 사용할 수 있음)
+- 단점 
+    - Convoy effect : 하나의 수행시간이 긴 프로세스에 의해 다른 프로세스들이 긴 대기 시간을 갖게 되는 현상 (대기시간 > 실행시간)
+    - 긴 평귱 응답시간
+
+<br>
+
+### RR(Round-Robin)
+
+![image](https://user-images.githubusercontent.com/88185304/148716080-1b05e0da-3ac1-4063-90de-5b263c180056.png)
+
+- 사용하는 정책 : Preemptive scheduling
+- 스케줄링 기준 (Criteria)
+    - 도착 시간 (ready queue 기준)
+    - 먼저 도착한 프로세스를 먼저 처리
+- 특징
+    - <b>자원 사용 제한 시간(time quantum)이 있음</b>
+    - system parameter
+    - 프로세스는 할당된 시간이 지나면 자원 반납 (timer-runout)
+- 적합한 시스템 
+    - interactive system, time sharing system
+- 장점
+    - 특정 프로세서의 자원 독점 방지
+- 단점    
+    - Context switch overhead가 큼
+
+<br>
+
+### SPN(Shortest-Process-Next)
+
+- 사용하는 정책 : Non-preemptive scheduling
+- 스케줄링 기준 (Criteria)
+    - 실행시간 (burst 기준)
+    - burst time 가장 작은 프로세스를 먼저 처리 
+- 장점 
+    - 평균 대기시간 최소화
+    - 시스템 내 프로세스 수 최소화 (스케줄링 부하 감소, 메모리 절약 -> 세스템 효율 향상)
+    - 많은 프로세스들에게 빠른 응답시간 제공
+- 단점 
+    - Starvation(무한대기) 현상 발생: BT가 긴 프로세스는 자원을 할당 받지 못 할 수 있음. (Aging 등으로 해결, ex HRRN)
+    - 정확한 실행 시간을 알 수 없음 : 실행시간 예측기법 필요
+
+<br>
+
+### SRTN(Shortest Remaining Time Next)
+
+- 사용하는 정책 : Preemptive scheduling (잔여 실행 시간이 더 적은 프로세스가 ready 상태가 되면 선점됨)
+- 특징 
+    - SPN의 변형
+- 장점 
+    -  SPN의 장점 극대화
+- 단점 
+    - 프로세스 생성시, 총 실행 시간 예측이 필요함.
+    - 잔여 실행을 계혹 추적해야 함 = overhead
+    - context switching overhead
+
+
+<br>
+
+### HRRN(High-Response-Ratio-Next)
+
+- 사용하는 정책 : SPN + <b>Aging concepts</b>, Non-preemptive sheduling
+    - Aging concepts란? 프로세스의 대기 시간을 고려하여 기회를 제공
+- 특징 
+    - SPN의 변형
+- 스케줄링 기준(Creteria)
+    - response ratio 가 높은 프로세스 우선 (Response ratio = (WT+BT)/BT, 실행시간 대비 얼마나 기다렸는가?)
+- 장점
+    - SPN의 장점 극대화
+    - Starvation 현상 방지
+- 단점
+    - 실행 시간 예측 기법 필요 (overhead)
+
+<br>
+
+### MLQ(Multi-level Queue)
+
+![image](https://user-images.githubusercontent.com/88185304/148717821-216ada7f-26af-4325-914d-bc0511147e88.png)
+
+- 특징
+    - 작업(or 우선순위)별 별도의 ready queue를 가짐
+        - 최초 배정된 queue를 벗어나지 못함
+        - 각각의 queue는 자신만의 스케줄링 기법 사용
+    - Queue 사이에는 우선순위 기반의 스케줄링 사용 (ex, fixed-priority preemptive scheduling)
+- 장점
+    - 우선순위가 높음 프로세스들의 빠른 응답시간
+- 단점
+    - 여러 개의 Queue 관리 등 스케줄링 overhead
+    - 우선순위가 낮은 queue는 starvation 현상 발생가능
+
+<br>
+
+### MFQ(Multi-level Feedback Queue)
+
+![image](https://user-images.githubusercontent.com/88185304/148718064-58310a3e-12ff-4e08-8880-830e8afdfc03.png)
+
+- 특징
+    - 프로세스의 queue 간 이동이 허용된 MLQ
+    - Feadback을 통해 우선 순위 조정 (현재까지의 프로세서 사용 정보(패턴) 활용)
+    - Dynamic priority
+    - Preempive scheduling
+    - Favor short burst-time process
+    - Favor I/O bounded process
+    - Improve adaptablility
+- 장점 
+    - 프로세스에 대한 사전 정보 없이 SPN, SRTN, HRRN 기법의 효과를 볼 수 있음
+
+
+
 </br></br>
 
 ## 출처
@@ -367,3 +498,4 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 - https://eun-jeong.tistory.com/20
 - https://magi82.github.io/process-thread/
 - https://www.crocus.co.kr/1255
+- https://www.youtube.com/watch?v=keY9Wi7scEs&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=10
