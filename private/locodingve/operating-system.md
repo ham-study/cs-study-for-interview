@@ -556,7 +556,7 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 
 - DMA(Direct Memory Access): 주변 장치들이 메모리에 직접 읽거나 쓸 수 있는 기능
 - DMA가 없다면 : DMA를 사용하지 않으므로 주변 장치와 메모리에 데이터 전송이 발생할 때 마다 CPU가 처리하여, 처리 효율이 떨어짐
-- DMA가 있다면(Processor with DMA): CPU가 해야할 주변장치간의 데이터 전송을 DMA가 해줌으로서 효율을 높임
+- DMA가 있다면(Processor with DMA): CPU가 해야할 주변장치와 데이터 전송을 DMA가 해줌으로서 효율을 높임
     (DMA가 주변장치의 데이터 전송이 필요하다면, DMA controller에게 DMA Reqeust(전송데이터 크기, 주소, 추가정보 포함)를 송신한다. 그리고 DMA controller를 통해 주변 장치와 메모리 사이에 데이터를 전송하며, 전송이 완료되면 인터럽트를 발생시켜 CPU에게 전송이 끝남을 알린다.)
 
 </br></br>
