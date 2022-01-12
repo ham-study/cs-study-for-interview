@@ -9,6 +9,7 @@
 5. [CPU스케줄링](#CPU스케줄링)
 6. [스케줄링알고리즘](#스케줄링알고리즘)
 7. [인터럽트](#인터럽트)
+8. [프로세스동기화](#프로세스동기화)
 
 <br><br>
 
@@ -561,6 +562,84 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 
 </br></br>
 
+# 프로세스동기화
+
+### 프로세스 동기화의 필요성
+
+- 다중 프로그래밍 시스템에서 여러개의 프로세스들이 서로 독립적으로 동작을 합니다. 공유 자원또는 데이터가 있을 때 문제가 발생할 수 있는데,(= 병행 수행중인 비동기적 프로세스들이 공유 자원에 동시 접근 할 떄 문제가 발생할 수 있음) 이때 프로세스들 간 동작을 맞추고 공유하는 동기화가 필요합나다.
+
+
+### 공유자원, 경쟁상태, 임계구역
+
+- 공유 데이터(shared data or critical data) : 여러 프로세스들이 공유하는 데이터
+
+- 임계 영역(critical section) : 공유 데이터를 접근하는 코드 영역
+
+![image](https://user-images.githubusercontent.com/88185304/149049121-5f4f499d-ba3a-4e04-9d0f-b683bec566f3.png)
+(기계어 명렁의 특징 : 원자성을 갖는다. 즉 한 기계어 명령의 실행 도중에 인터럽트를 받지 않는다.)
+
+![image](https://user-images.githubusercontent.com/88185304/149051557-712e9fe7-0302-4ece-bb3d-fe9517412837.png)
+(Race condition : 명령 수행 순서에 따라 결과가 달라지는 상태를 의미합니다.)
+
+- 상호 배제(mutual exclusion) : 둘 이상의 프로세스가 동시에 임계 영역에 진입하는 것을 막는 것
+    - 상호배제의 메소드들
+        - Multual exclusion primitive(기본연산)
+            - enterCS() primitive
+                - 임계영역 진입 전 검사
+                - 다른 프로세스가 임계영역 안에 있는지 검사
+            - exitCS() primitive
+                - 임계영역을 벗어날 때의 후처리 과정
+                - 임계영역을 벗어남을 시스템이 알림
+
+    - 상호배제 기본연상의 조건
+        - 상호배제(Mutual exclusion) : 임계영역에 프로세스가 있으며, 다른 프로세스의 집입을 금지시킴
+        - 진행(Progress) : 임계영역 안에 있는 프로세스 외에는, 다른 프로세스가 임계영역에 진입하는 것을 방해하면 안됨
+        - 한정 대기(Bounded waiting) : 프로세스의 임계영역 진입은 유한 시간 내에 허용되어야 함
+
+### Dekker's Algorithm
+
+![image](https://user-images.githubusercontent.com/88185304/149053752-1698c1cb-b5d9-46bb-aa71-f0fd8dba20e1.png)
+
+- Two process ME(상호배제)를 보장하는 최초의 알고리즘
+
+### Peterson's Algorithm
+
+![image](https://user-images.githubusercontent.com/88185304/149054145-b9f9a7f3-9252-44e5-bf07-16d59ae049b7.png)
+
+- Dekker's algorithm 보다 간단하게 구현
+
+### Semaphore(세마포어)
+
+![image](https://user-images.githubusercontent.com/88185304/149061301-44dadb56-32f7-4aa5-9802-1676472a4de5.png)
+
+- 세마포어는 자원의 개수를 의미합니다. 즉 동시에 자원에 접근할 수 있는 허용가능한 카운터의 개수입니다. 
+    - 동기화 기법 중, 추상적인 방법
+    - 세마포어는 여러 프로세스들에 의해 공유되는 변수로 정의
+    - 이 변수는 오직 P()와 V()라는 원자적인 연산에 의해서만 접근 가능
+    - 리소스의 상태를 나타내는 카운터라고 생각하면 됨.
+    - 임의의 변수 하나에 ready queue 하나가 할당 됨
+
+- 장점 : No busy waiting (기다려야 하는 프로세스는 block 상태가 됨)
+- 단점 : Semaphore queue에 대한 wake-up 순서는 비결정적이라서 기아 현상이 일어날 수 있다.
+
+### Mutex(뮤텍스)
+
+- 뮤텍스는 상호배제를 뜻하며, Binary Semaphore와 같은 의미이다. 즉 자원에 단 하나의 작업만이 접근할 수 있다는 뜻이다. 
+- 임계 영역을 가진 스레드들의 Running Time이 서로 겹치지 않게 각각 단독으로 실행되게 하는 기술이다. 다중 프로세스들의 공유 자원에 대한 접근을 조율하기 위해 lock과 unlock을 사용한다. 
+- 세미포어와의 가장 큰 차이점은 동기화 대상의 개수이다. 뮤텍스는 동기화 대상이 오직 하나 뿐일 때, 세마포어는 동기화 대상이 하나 이상일 때 사용한다.
+
+### Monitor(모니터)
+
+![image](https://user-images.githubusercontent.com/88185304/149060769-6a0e21df-ea31-498e-96a8-0ab030e3b790.png)
+
+- 모니터 내에서는 한 번에 하나의 프로세스만 활동이 가능하다. 프로그래머가 동기화 제약 조건을 명시작으로 코딩할 필요가 없다. 또한 프로세스가 모니터 안에 기다릴 수 있도록 Condition variable을 사용한다. 이는 wait/signal 연산에 의해서만 접근이 가능하다.
+- 모니터와 세마포어의 차이점은 모니터는 자체적으로 하나의 프로세스만 처리한다. 반면 세마포어는 직접 락을 걸고 해제해야 한다. 
+
+- 장점 : 사용이 쉽고, Deadlock 등 error 발생 가능성이 낮다.
+- 단점 : 지원하는 언어에서만 사용이 가능하며, 컴파일러가 OS를 이해하고 있어야 한다. (임계영역 접근을 위한 코드 생성)
+
+</br></br>
+
 ## 출처
 
 - https://www.youtube.com/watch?v=EdTtGv9w2sA&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN
@@ -574,3 +653,4 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 - https://mindstation.tistory.com/164
 - https://kangraemin.github.io/operation%20system/2020/10/20/interrupt/
 - https://velog.io/@audgus47/UART-Interrupt-DMA-%EB%B0%A9%EC%8B%9D
+- https://www.youtube.com/watch?v=wdaf2gy83uU&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=12
