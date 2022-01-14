@@ -808,7 +808,7 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
     - internal/external fragmentation이 발생하여, 시스템 자원이 낭비될 수 있다.
 
 
-## 가변 불할 방식(Variable partition multi-programming, VPM)
+### 가변 분할 방식(Variable partition multi-programming, VPM)
 
 - 특징 
     - 초기에는 전체가 하나의 영역
