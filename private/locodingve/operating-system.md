@@ -11,6 +11,7 @@
 7. [인터럽트](#인터럽트)
 8. [프로세스동기화](#프로세스동기화)
 9. [교착상태](#교착상태)
+10. [메모리관리](#메모리관리)
 
 <br><br>
 
@@ -778,7 +779,94 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 - 교착상태(Deadlock) 해결 방법
     - 짝수인 철학자는 왼쪽부터, id가 홀수인 철학자는 오른쪽부터 젓가락을 집어들게 하면 교착상태가 일어나지 않게 한다.
 
+<br><br>
 
+# 메모리관리
+
+### 메모리(기억장치)의 종류
+
+![image](https://user-images.githubusercontent.com/88185304/149438443-2e38844f-18e1-4d97-b78b-d85f89bccaee.png)
+
+### 메모리관리의 필요성
+
+- 여러 프로세스가 한정된 자원을 사용하기 떄문에 메모리가 관리가 필요하다.
+- 메모리 자원을 효율적으로 사용하기 위해(메모리를 관리하지 않으면 메모리를 낭비될 수 있는 경우가 발생할 수 있다. 예로는 외부적 단편화가 발생하여 메모리 자원이 있음에도 사용하지 못하는 상황이 발생할 수 있다.)
+
+### 고정 분할 방식(Fixed partition multi-programming, FPM)
+
+- 특징
+    - 미리 메모리 공간을 고정된 크기로 분할되어 있음.
+    - 각 프로세스는 하나의 partition(분할)에 적재될 수 있음.
+    - 커널 및 사용자 영역을 보호하기 위해 boundary address을 미리 알고 있음.
+
+    ![image](https://user-images.githubusercontent.com/88185304/149442481-fe88787b-7a73-4724-aebe-36dc6e5964dc.png)
+
+- 장점 
+    - 미리 메모리 공간이 분할되어 있기 때문에, 메모리 관리가 간편하다. 
+
+- 단점
+    - internal/external fragmentation이 발생하여, 시스템 자원이 낭비될 수 있다.
+
+
+## 가변 불할 방식(Variable partition multi-programming, VPM)
+
+- 특징 
+    - 초기에는 전체가 하나의 영역
+    - 프로세스를 처리하는 과정에서 메모리 공간이 동적으로 분할됨.
+
+    ![image](https://user-images.githubusercontent.com/88185304/149443014-702d21f4-f288-4fa7-904e-ee2971a020f9.png)
+
+- 장점 
+    - internal fragmentation이 일어나지 않음.
+
+- 단점
+    - external fragmentation 발생
+
+- 프로세스가 반납한 메모리에 새로운 process에 할당하기 위한 배치 전략
+
+    ![image](https://user-images.githubusercontent.com/88185304/149443861-ecb6ab1d-de83-4cfc-bad1-0f1f967e1529.png)
+
+    - First-fit(최초 적합)
+        - 충분한 크기를 가진 첫번째 partition을 선택
+        - 간단하여 overhead 발생가능성 적음
+        - 그러나 공간 활용률이 떨어질 수 있음
+    - Best-fit(최적 적합)
+        - process가 들어갈 수 있는 partition 중 가장 작은 곳 선택
+        - 모든 partition을 확인해야 함으로, 탐색시간이 오래 걸림
+        - 크기가 큰 partition을 유지할 수 있음.
+        - 그러나 활용하기에는 너무 작은 크기의 partition이 많이 발생할 가능성이 큼
+    - Worst-fit(최악 적합)
+        - process가 들어갈 수 있는 partition 중 가장 큰 곳 선택
+        - 모든 partition을 확인해야 함으로, 탐색시간이 오래 걸림
+        - 활용하기에는 너무 작은 크기의 partition 발생을 줄일 수 있음
+        - 큰 프로세스에게 필요한, 큰 크기의 partition 화보가 어려울 수 있음
+    - Next-fit(순차 최초 접합)
+        - 최초 적합 전략과 유사하지만, state table에서 마지막으로 탐색한 위치부터 탐색
+        - 메모리 영역의 사용 빈도 균등화
+        - 간단하여 overhead 발생가능성 적음
+
+- external fragmentation 발생을 해결하기 위한 전략
+    - Coalescing holes (공간 통합)
+        - 인접한 빈 영역을 하나의 partition으로 통합
+        - process가 메모리를 반납하고 나가면 수행
+        - overhead 발생 낮음
+    - Storage compaction (메모리 압축)
+        - 모든 빈 공간을 하나로 통합
+        - 프로세스 처리에 필요한 적재 공간 확보가 필요할 때 수행
+        - 메모리 압축시, 모든 프로세스를 (중지하고) 재배치해야 함으로 많은 시스템 자원을 소비함(overhead 발생 가능성 큼)
+        - 많은 시스템 자원을 활용하기 때문에, 자주하면 안됨 -> 각 os 마다 주기가 다름.
+
+### 32bit VS 64bit
+
+![image](https://user-images.githubusercontent.com/88185304/149444791-8902aacf-cb37-45d5-8f6f-e146e1d2a7b4.png)
+
+- 주기억장치와 레지스터 사이의 데이터 전송단위(word)가 32bit냐 64bit냐의 차이에 따라 32bit CPU, 64bit CPU 라고 일컸는다. 
+
+- 차이점
+    - 주기억장치와 레지스터 사이의 데이터 전송 단위가 다르다.
+    - 전송단위가 다르면서 발생한 차이점으로, 32bit cpu는 4GB이상을 데이터를 처리할 수 없다.(=주소값이 32bit를 넘어가기 때문에 32bit 시스템에서는 인식되지 않는다.) 그에 반해, 64bit는 가능하다. 
+        - 2^32 = 4.294,967,296 = 2^30 * 2^2 -> 약 4GB (1GB -> 약 2^30)
+        - 2^64 = 2^60 * 2^4 GB = 61EB(엑사바이트)
 
 </br></br>
 
