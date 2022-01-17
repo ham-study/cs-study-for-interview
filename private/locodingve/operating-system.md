@@ -12,7 +12,7 @@
 8. [프로세스동기화](#프로세스동기화)
 9. [교착상태](#교착상태)
 10. [메모리관리](#메모리관리)
-
+11. [가상메모리 개요](#가상메모리-개요)
 <br><br>
 
 # 운영체제소개
@@ -870,20 +870,141 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 
 </br></br>
 
+# 가상메모리 개요
+
+### 가상메모리 정의
+
+- 메모리가 실제 메모리보다 많아 보이게 하는 기술로, 어떤 프로세스가 실행될 때 메모리에 해당 프로세스 전체가 올라가지 않더라도 실행이 가능하다는 점에 착안하여 고안되었습니다. 
+    - 사용자 프로그램을 여러 개의 block으로 분할한 후, 실행시 필요한 blodk들만 메모리에 적재하는 기법 (나머지 block 들은 swap device에 존재)
+
+### 가상메모리 필요성
+
+- 일반적으로 한 시스템의 여러 프로세스들은 CPU와 메인 메모리를 공유한다. CPU를 공유하는 부분에 대해서는 일반적으로 순서를 기다리느라 단지 느려질 뿐이고 심각한 오류는 발생하지 않는다. 그러나 프로세스들이 존재하는 메모리가 여유가 없이 지나치게 많은 요구에 의해 오염될 경우, 프로그램의 논리와 무관하게 오류가 난다. 이를 방지하기 위한 기술이 바로 가상메모리이다.
+
+- 이러한 가상메모리 기술은 사용자가 신경 쓸 필요 없이 OS 측에서 자동으로 작동하며 사용자가 프로세스를 올리고 내림에 있어서 역시 사용자가 신경 쓸 필요 없이 OS의 가상메모리를 활용하여 자동으로 메모리 관리를 위임할 수 있다는 장점이 있다.
+
+### 페이징 기법
+
+- 특징
+    - 프로그램을 고정된 크기(논리적 크기 X)의 block으로 분할(page) / 메모리를 block size로 미리 분할(page frame)
+        - 외부 단편화 문제 없음
+        - 메모리 통합/압축 불필요
+        - 프로그램의 논리적 구조 고려하지 않음 -> page sharing/protection 이 복잡
+    - 필요한 page만 page frame에 적재하여 사용 -> 메모리 효율적 활용
+    - page mapping overhead 발생 가능성 있음
+        - 메모리 공간 및 추가 적인 메모리 접근이 필요
+        - 전용 HW 활용으로 해결 가능 -> 하드웨어 비쌈
+
+- virtual address : v = (p, d)
+    - p : page number
+    - d : offset
+
+- address mapping 
+    - PMT(Page Map Table) 사용
+
+- address mapping mechanism
+    - Direct mapping(직접 사상)
+
+        ![image](https://user-images.githubusercontent.com/88185304/149689551-19472c70-bc59-4fc3-8a50-ba4e37dda029.png)
+
+        - Block mapping 방식과 유사
+        - 가정
+            - PMT를 커널 안에 저장
+            - PMT entry size = entrySize
+            - page size = pageSize
+        - 문제점
+            - 메모리 접근 횟수가 2배 -> 성능 저하 유발
+            - PMT를 위한 메모리 공간 필요
+        - 해결방안
+            - Associative mapping(TLB)
+            - PMT를 위한 전용 기억장치(공간) 사용
+
+    - Associative mapping(연관 사상)
+
+        ![image](https://user-images.githubusercontent.com/88185304/149689835-1270dfa3-fcdd-4fec-9053-ae780260cbf8.png)
+
+        - TLB(translation look-aside buffer)에 PMT 적재
+        - PMT를 병렬 탐색
+        - Low overhead, high speed
+        - 비싼 하드웨어 필요
+
+    - Hybrid direct/associative mapping
+
+        ![image](https://user-images.githubusercontent.com/88185304/149690147-b8749a36-735a-4b38-8ffb-28fc5b77d720.png)
+
+        - 두 기법을 혼합하여 사용함으로서, HW 비용은 줄이고, Associative mapping 장점 활용
+        - 작은 크기의 TLB를 사용함
+            - PMT : 메모리(커널 공간)에 저장
+            - TLB : PMT 중 일부 entry들을 적재 -> 최근에 사용된 page 들에 대한 entiry 저장 (지역성 활용)
+
+
+### 세크먼테이션 기법
+
+- 특징
+    - 프로그램을 논리 단위로 분할(segment) / 메모리를 동적으로 분할
+        - 내부 단편화 문제가 없음
+        - segment sharing/protection이 용이함
+        - paging system과 비교하여 관리 overhaed가 큼
+    - 필요한 segment만 메모리에 적재하여 사용
+    - segment mapping overhead
+        - 메모리 공간 및 추가적인 메모리 접근이 필요
+        - 전용 HW 활용으로 해결 가능
+
+- virtual address : v = (s, d)
+    - s : segment number
+    - d : offset
+
+- SMT(Segment Map Table) 사용
+
+- address mapping mechanism
+    - paging system과 유사함
+
+    ![image](https://user-images.githubusercontent.com/88185304/149692496-4cd53fd0-2189-456a-9ece-c2f9cd408fcc.png)
+
+
+### Hybrid Paging/Segmentation 기법
+
+- 특징
+    - 논리적 분할와 고정 크기 분할을 결합
+        - page sharing/protection이 쉬움
+        - 메모리 할당/관리 overhead 가능성 적음
+        - external fragmentation 문제 없음
+    - 전체 테이블의 수 증가
+        - 메모리 소보가 크다
+        - address mapping 과정이 복잡
+    - Direct mapping 의 경우, 메모리 접근이 3배 
+        - 성능 저하를 이르킬 수 있음
+        - 그럼에도 불구하고 장점이 많아서 많이 사용하는 기법
+
+- virtual address : v = (s, p, d)
+    - s : segment number
+    - p : page number
+    - d : offset
+
+- SMT(Segment Map Table) 와 PMT(Page Map Table) 모두 사용
+
+- address mapping mechanism
+    - Direct, associated 등
+    
+    ![image](https://user-images.githubusercontent.com/88185304/149694251-08e43a20-d488-4727-ae99-6fcd8478953f.png)
+
+
+</br></br>
+
+
 ## 출처
 
 - https://www.youtube.com/watch?v=EdTtGv9w2sA&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN
-- https://www.youtube.com/watch?v=jZuTw2tRT7w&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=5
+
 - https://velog.io/@codemcd/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9COS-5.-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EA%B4%80%EB%A6%AC
 - https://ko.wikipedia.org/wiki/%EC%8A%A4%EB%A0%88%EB%93%9C_(%EC%BB%B4%ED%93%A8%ED%8C%85)
 - https://eun-jeong.tistory.com/20
 - https://magi82.github.io/process-thread/
 - https://www.crocus.co.kr/1255
-- https://www.youtube.com/watch?v=keY9Wi7scEs&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=10
 - https://mindstation.tistory.com/164
 - https://kangraemin.github.io/operation%20system/2020/10/20/interrupt/
 - https://velog.io/@audgus47/UART-Interrupt-DMA-%EB%B0%A9%EC%8B%9D
-- https://www.youtube.com/watch?v=wdaf2gy83uU&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=12
 - https://coding-factory.tistory.com/311
-- https://www.youtube.com/watch?v=XMrlt3ZwfM4&list=PLBrGAFAIyf5rby7QylRc6JxU5lzQ9c4tN&index=21
 - https://m.blog.naver.com/hirit808/221788147057
+- https://ahnanne.tistory.com/15
+- https://namu.wiki/w/%EA%B0%80%EC%83%81%20%EB%A9%94%EB%AA%A8%EB%A6%AC?from=%EA%B0%80%EC%83%81%EB%A9%94%EB%AA%A8%EB%A6%AC
