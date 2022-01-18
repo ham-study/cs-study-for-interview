@@ -13,6 +13,8 @@
 9. [교착상태](#교착상태)
 10. [메모리관리](#메모리관리)
 11. [가상메모리 개요](#가상메모리-개요)
+12. [가상메모리 관리](#가상메모리-관리)
+
 <br><br>
 
 # 운영체제소개
@@ -991,6 +993,85 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 
 </br></br>
 
+# 가상메모리 관리
+
+### 가상메모리 관리의 목적
+- page fault rate 를 최소화 할 수 있도록 전략들을 설계해야함
+    - page fault가 일어날 경우, context switch(커널개입)이 일어날 것이기 때문에 시스템 성능향상을 위해서 page fault를 최소화해야 함
+
+
+
+### 요구 페이징 (demand paging)
+
+- 초기에 필요한 것만 적재하고, 나중에는 실제로 필요할 때 page를 메모리에 올리는 기법 
+- 이렇게 되면 내가 필요한 page만 메모리에 올리게 되고, 쓰지 않는 page들은 한번도 올라오지 않을 수도 있음
+- 사용되지 않은 page들을 메모리에 올리지 않기 때문에 시간 낭비도 막고 공간 낭비도 막을 수 있는 장점이 있음
+
+- 관련 용어
+    - page fault 
+        - 페이지 테이블에는 유효 - 무효 비트가 있습니다. 유효비트라면 해당 page가 메모리에 올라가 있다는 의미이고, 무효비트라면 해당 page가 메모리에 없거나 또는 사용되지 않는 주소 영역을 의미입니다. 이때 주소 변환시에 무효비트가 세팅되었다면, 이를 page fault(페이지 부재)라고 합니다.
+        - 처리 과정
+            1. 무효 페이지에 접근하게 되면 프로세스가 중단되고 운영체제에게 트랩을 겁니다.(페이징 하드웨어가 걸음)
+            2. 자유 프레임(빈 공간)을 찾습니다. 만약 없다면 교체할 프레임(replace)을 찾습니다.
+            3. 해당 페이지를 디스크에서 메모리로 읽어옵니다. 디스크 i/o 과정이기 때문에 해당 프로세스는 cpu를 선점당하고 block상태가 된니다. disk read 과정이 끝나면 페이지 테이블에 기록하고 valid비트를 세팅합니다. ready 큐 삽입되어서 기다립니다.
+            4. 해당 프로세스가 cpu를 할당받아 실행됩니다.
+
+### 페이지 교체 알고리즘
+
+page fault가 일어나고 빈 공간을 찾지 못할 때, 교체할 프레임을 찾아야 합니다. 이때 사용되는 알고리즘은 아래과 같습니다. 
+
+- OPT (Min Algorithm)
+
+    ![image](https://user-images.githubusercontent.com/88185304/149869381-e347a895-b627-4847-92f6-0f7feca7c417.png)
+
+    - minimize page fault frequency
+    - 앞으로 가장 오랫동안 참조되지 않을 페이지 교체
+    - 실현 불가능한 기법 -> page freference string을 미리 알고 있는 것은 불가능
+    - 교체 기법의 성능 평가 도구로 사용됨
+
+- FIFO
+
+    ![image](https://user-images.githubusercontent.com/88185304/149869652-7d7b5f0d-39c6-4a0f-b6c0-b0a3fb2b6d36.png)
+
+    - First In First Out
+    - 가장 오래된 page 교체 -> 페이지가 적재된 시간을 기억하고 있어야 함
+    - 자주 사용되는 페이지가 교체될 가능성이 높음 -> 지역성 고려하지 않았음
+    - FIFO anomaly 
+        - 더 많은 페이지 프레임을 할당 받음에도 불구하고 page fault의 수가 증가하는 경우 발생
+
+- LRU (least recently used)
+
+    ![image](https://user-images.githubusercontent.com/88185304/149869962-72c0acd9-38ca-46ed-8b5d-406cabf37a01.png)
+
+    - 가장 오랫동안 참조되지 않은 page 교체
+    - page 참조시 마다 시간을 기록해야 함 -> overhead 가능성 큼 ->(해결방법) 간호화된 정부 수집으로 해소 가능(ex 정확한 시간 대신 순서만 기록)
+    - locally에 기반을 둔 교체 기법
+    - min algorithm에 근접한 성능을 보여줌
+    - 실제로 가장 많이 사용되는 기법
+
+- LFU (least frequently used)
+
+    ![image](https://user-images.githubusercontent.com/88185304/149870230-22ce3232-cbfe-4d13-a993-841ef6003cc9.png)
+
+    - 가장 참조가 횟수가 적은 페이지 교체
+    - 페이지 잠조시 마다, 참조 횟수를 누적시켜야 함 -> overhead 발생여지는 있지만, LRU 대비 overhead 발생 가능성 적음
+    - locality 고려
+    - 최근 적재된 참조되
+
+- NUR (not used recently)
+    - bit vector 사용
+    - 교체 순서 -> (1순위 고련) page fault 가능성 낮추기, (2순위 고려) write back 횟수 낮추기
+        1. (r , m) = (0 , 0)
+        2. (r , m) = (0 , 1)
+        3. (r , m) = (1 , 0)
+        4. (r , m) = (1 , 1)
+
+
+
+
+
+</br></br>
+
 
 ## 출처
 
@@ -1008,3 +1089,4 @@ cf. Job/Program 개념과 비교하면 좀 더 쉽게 이해할 수 있다.
 - https://m.blog.naver.com/hirit808/221788147057
 - https://ahnanne.tistory.com/15
 - https://namu.wiki/w/%EA%B0%80%EC%83%81%20%EB%A9%94%EB%AA%A8%EB%A6%AC?from=%EA%B0%80%EC%83%81%EB%A9%94%EB%AA%A8%EB%A6%AC
+- https://jeongmorecord.tistory.com/99
