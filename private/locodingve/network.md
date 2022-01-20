@@ -19,7 +19,21 @@
         - [전송 계층 (transport layer)](####전송-계층-(transport-layer))
         - [응용 계층 (application layer)](####응용-계층-(application-layer))
     - [OSI 모델과 TCP/IP 차이점](###OSI-모델과-TCP/IP-차이점)
-    
+2. [TCP와 UDP](#TCP와-UDP)
+    - [TCP(Transmission Control Protocol)](###TCP(Transmission-Control-Protocol))
+        - [TCP란?](####-TCP란?)
+        - [TCP Header](####TCP-Header)
+        - [TCP 3way handshake](####TCP-3way-handshake)
+        - [TCP 4way handshake](####TCP-4way-handshake)
+        - [흐름제어](####흐름제어)
+        - [혼잡제어](####혼잡제어)
+        - [오류제어](####오류제어)
+        - [문제점](####문제점)
+    - [UDP](###UDP(User-Datagram-Protocol))
+        - [UDP란?](####DUP란?)
+        - [UDP Header](####UDP-Header)
+<br>
+
 # OSI 모델와 TCP/IP 모델
 
 ### 기본 개념 정리
@@ -158,7 +172,162 @@ OSI 7계층 보다 조금 간소화된 모델이라고 볼 수 있습니다. 그
 -  TCP/IP는 수직 접근 방식을 따릅니다. 한편, OSI 모델은 수평 적 접근을 지원합니다.
 -  TCP/IP는 위에서 아래로의 접근 방식을 따르는 반면 OSI 모델은 상향식 접근 방식을 따릅니다.
 
+</br></br>
 
+# TCP와 UDP
+
+### TCP(Transmission Control Protocol)
+
+#### TCP란?
+
+- 신뢰성있는 데이터 통신을 가능하게 해주는 프로토콜입니다.
+- 양방향 통신을 합니다. (3 way-handshake)
+- 데이터의 순차 전송을 보장합니다.
+- 흐름 제어의 역할 합니다.
+- 혼잡 제어의 역할을 합니다.
+- 오류 감지 역할을 합니다.
+- 서로 연결된 네트워크를 통해 패깃을 전달하는 목적으로 사용합니다.
+
+#### TCP Header
+
+![image](https://user-images.githubusercontent.com/88185304/150253442-fb105b5e-6e67-4b88-ac8b-b768a1f7c36e.png)
+
+- TCP Flag
+    - C · E : 혼잡제어시 사용합니다.
+    - URG : 긴급 포인터(Urgent Pointer)가 있음을 표시합니다. (예를 들면, telnet에서 Ctrl + c 등의 인터럽트형 명령 전송할 경우)
+    - ACK : Acknoledgement Number 사용중을 의미합니다.
+    - PSH : Telnet 등의 실시간 대화형 데이터를 상위계층(응용계층)으로 전송하여 처리 요구를 의미합니다.
+    - RST : 연결 재설정, 포트가 닫혔을 때 에러 메시지가 있음을 의미합니다.
+    - SYN : 연결을 초기화화기 위해 순서 번호를 동기화할 때 사용합니다.
+    - FIN : 송신 측이 데이터 전송을 종료함을 의미합니다. (연결 해제)
+- Window : 수신자 측이 받을 수 있는 데이터 사이즈를 수신자 축에서 송신자 측으로 전송하는 값 입니다.
+- Checksum : TCP 헤더 데이터를 포함한 세그먼트 전체에 대한 계산값을 의미합니다. (에러체크)
+- Urgent Pointer : 긴급히 처리해야 할 필요가 있는 데이터의 마지막 Byte 위치를 의미합니다. 
+
+#### TCP 3way handshake
+
+![image](https://user-images.githubusercontent.com/88185304/150261373-b897f19d-7857-4884-a480-682f1dfb2cc4.png)
+
+1) Client는 Server에 접속을 요구하는 SYN 패킷을 전송하는데, 이 때 Client는 SYN을 보낸 후 SYN/ACK응답을 기다리는 SYN_SENT 상태 (Seq는 랜덤, Ack는 Seq + 1)
+
+2) Server는 SYN 요청을 받고 Client에게 요청을 수락한다는 ACK와 SYN Flag가 설정된 패킷을 발송 후 다시 ACK 응답을 기다리며, 이 때 Server는 SYN_RECEIVED 상태
+
+3) Client는 Server에게 ACK를 보내고 이후부터 연결이 이루어지고 데이터를 전송하며 이 때 Server의 상태는 ESTABLISHED
+
+#### TCP 4way handshake
+
+![image](https://user-images.githubusercontent.com/88185304/150261459-5d5c171d-dc54-499c-8e1d-a24f1bffc718.png)
+
+1) 통신을 종료하고자 하는 Client는 Server에게 FIN Flag를 세팅한 패킷을 전송 후 FIN_WAIT_1 상태
+
+2) FIN을 수신한 Server는 ACK를 Client에게 전송하고 소켓의 상태를 CLOSE_WAIT_2로 변경
+
+3) ACK를 수신한 Client는 Server가 FIN을 잘 받았다고 생각하고 FIN_WAIT_2로 소켓의 상태 변경 후 다시 FIN 패킷을 기다림
+
+4) ACK를 Client에게 전송한 Server는 다시 FIN 패킷을 Client로 전송 후 소켓을 LAST_ACK상태로 변경
+
+5) FIN을 수신한 Client는 Server에게 ACK를 전송 후 소켓의 상태를 TIME_WAIT 상태로 변경
+
+#### 흐름제어
+
+수신측의 버퍼 오버 플로우로 인한 패킷 손실이 발생할 수 있기 때문에, 생산자가 데이터를 만드는 속도와 소비자가 데이터를 사용하는 속도의 균형을 맞추는 것을 흐름제어라고 할 수 있습니다. <br>
+쉽게 말하자면 수신측의 버퍼 오버 플로우를 막기 위해 송신측의 흐름을 제어하는 방식이라고 할 수 있습니다. 그리고 흐름을 제어하기 위해 수신측의 수신 윈도우 변수를 이용합니다. 
+
+- Stop and Wait(정지 - 대기)
+    - 매번 전송한 패킷에 대한 확인 응답을 받아야 그 다음 패킷을 전송할 수 있다. 이러한 구조로 인해 비효율적이라는 단점이 있다.
+
+- Sliding Window(슬라이딩 윈도우)
+    - 수신측에서 설정한 윈도우 크기만큼 송신측에서 확인 응답 없이 세그먼트를 전송할 수 있게 하여 데이터 흐름을 동적으로 조절하는 기법입니다. 따라서 송신측에서는 ACK 프레임을 수신하지 않더라도 여러 개의 프레임을 연속적으로 전송할 수 있습니다.
+    - 송신측에서 0, 1, 2, 3, 4, 5, 6을 보낼 수 있는 프레임을 가지고 있고 데이터 0, 1을 전송했다고 가정하면 슬라이딩 윈도우 구조는 2, 3, 4, 5, 6처럼 변하게 됩니다. 이때 만약 수신측으로부터 ACK라는 프레임을 받게 된다면 송신측은 이전에 보낸 데이터 0, 1을 수신측에서 정상적으로 받았음을 알게 되고 송신측의 슬라이딩 윈도우는 ACK 프레임의 수만큼 오른쪽으로 경계가 확장됩니다.
+    - Stop and Wait의 비효율성을 개선되었습니다.
+
+    ![image](https://user-images.githubusercontent.com/88185304/150265864-1ebd4477-cd0b-4d6e-bc3f-27665efd1f9b.png)
+
+
+#### 혼잡제어
+
+공유자원인 네트워크망의 혼잡을 악화시켜 통신에 충돌이 나게 하는 것을 줄이고, 한정된 자원을 잘 분배하여 원활히 돌아갈 수 있도록 제어하는 것을 혼잡 제어라고 합니다. 
+
+- AIMD(Additive Increase Multicative Decrease)
+    - 합 증가/곱 감소 알고리즘이라고 합니다. 
+    - 처음에 패킷 하나를 보내는 것으로 시작하여 전송한 패킷이 문제 없이 도착한다면 Window Size를 1씩 증가시키며 전송하는 방법입니다. 만약, 패킷 전송을 실패하거나 TIME_OUT이 발생하면 Window Size를 절반으로 감소시킵니다.
+    - 이 방식을 사용하는 여러 호스트가 한 네트워크를 공유하고 있으면 나중에 진입하는 쪽이 처음에는 불리하지만 시간이 흐르면 평형 상태로 수렴하게 되는 특징이 있습니다.
+    - 문제점은 초기에 네트워크의 높은 대역폭을 사용하지 못하여 오랜 시간이 걸리게 되고, 네트워크가 혼잡해지는 상황을 미리 감지하지 못합니다. 즉, 네트워크가 혼잡해지고 나서야 대역폭을 줄이는 방식입니다.
+
+- Slow Start
+    - AIMD가 네트워크 수용량 주변에서는 효율적으로 동작하지만, 처음에 전송 속도를 올리는데 시간이 너무 길다는 단점이 있습니다. slow start는 이 단점을 보완한 방법입니다. 
+    - Slow Start는 AIMD와 마찬가지로 패킷을 하나씩 보내는 것부터 시작합니다. 이 방식은 패킷이 문제 없이 동작하여 ACK 패킷마다 Window Size를 1씩 늘립니다. 즉, 한 주기를 지나면 Window Size는 2배가 됩니다.
+    - 혼잡 현상이 발생하면 Window Size를 1로 떨어뜨립니다.
+    - 처음에는 네트워크의 수용량을 예측할 수 있는 정보가 없지만 한번 혼잡 현상이 발생하였던 Window Size의 절반까지는 이전처럼 지수 함수 꼴로 Window Size를 증가시키고 그 이후부터는 완만하게 1씩 증가시키는 방식입니다.
+    - 미리 정해진 임계값(threshold)에 도달할 때까지 윈도우의 크기를 2배씩 증가시킵니다.
+    - Slow Start라는 이름을 사용하지만, 매 전송마다 2배씩 증가하기 때문에 전송되어지는 데이터의 크기는 지수함수적으로 증가합니다.
+
+    ![image](https://user-images.githubusercontent.com/88185304/150267425-3d6a48c5-4e85-4a5b-af28-84be5825c39e.png)
+
+
+#### 오류제어
+
+오류 검출과 재전송을 포함하며, ARQ(Automatic Repeat Request) 기법을 사용해 프레임이 손상되었거나 손실되었을 경우, 재전송을 통해 오류를 복구합니다. ARQ 기법은 흐름 제어 기법과 연관되어 있습니다.
+
+- Stop and Wait ARQ
+    - 송신 측에서 1개의 프레임을 송신하고, 수신측에서 수신된 프레임의 에러 유무에 따라 ACK 혹은 NAK(Negative Acknowledgement)를 보내는 방식입니다.
+    - 식별을 위해 데이터 프레임과 ACK 프레임은 각각 0, 1 번호를 번갈아가며 부여합니다.
+    - 수신측에 데이터를 받지 못했을 경우 NAK를 보내고, NAK를 받은 송신측은 데이터를 재전송합니다.
+    - 만약, 데이터나 ACK가 분실되었을 경우 일정 간격의 시간을 두고 타임아웃이 되면 송신측은 데이터를 재전송합니다.
+
+- Go-Back-n ARQ
+    - 전송된 프레임이 손상되거나 분실된 경우 그리고 ACK 패킷의 손실로 인한 TIME_OUT이 발생한 경우, 확인된 마지막 프레임 이후로 모든 프레임을 재전송합니다.
+    - 슬라이딩 윈도우는 연속적인 프레임 전송 기법으로 전송측은 전송된 프레임의 복사본을 가지고 있어야 하며, ACK와 NAK 모두 각각 구별해야 합니다. 
+        - ACK : 다음 프레임을 전송
+        - NAK : 손상된 프레임 자체 번호를 반환
+
+    - 재전송 되는 경우
+        - NAK 프레임을 받았을 경우 : 만약 수신측으로 0 ~ 5까지의 데이터를 보냈다고 가정했을 때, 수신측에서 데이터를 받았음을 확인하는 데이터 오류 프레임 2를 발견하고 NAK2를 전송측에 보낸다고 가정해봅시다. NAK2를 받은 전송측은 데이터 프레임 2가 잘못되었다는 것을 알고 데이터를 재전송합니다. GBn ARQ의 특징은 데이터를 재전송하는 부분입니다. NAK(n)를 받아 데이터를 재전송하빈다.
+
+    - 전송 데이터 프레임의 분실
+        - GBn ARQ의 특징은 확인된 데이터 이후의 모든 데이터 프레임 재전송과 수신측의 폐기입니다. 수신측에서 데이터 1을 받고 다음 데이터로 3을 받게 된다면 데이터 2를 받지 못했으므로 수신측에서는 데이터 3을 폐기하고 데이터 2를 받지 못했다는 NAK2를 전송측에 보냅니다. NAK를 받은 전송측은 '재전송 되는 경우'와 마찬가지로 NAK(n) 데이터로부터 모든 데이터를 재전송하며 수신측은 기존에 받았던 데이터 중 NAK(n)으로 보냈던 대상 데이터 이후의 모든 데이터를 폐기하고 재전송 받습니다.
+
+        ![image](https://user-images.githubusercontent.com/88185304/150266462-885027d8-b16d-4bdd-b49a-d64521acfeb1.png)
+
+    - 지정된 타임 아웃 내의 ACK 프레임 분실
+        - 전송측은 분실된 ACK를 다루기 위해 타이머를 가지고 있습니다. 또한 전송측에서는 이 타이머의 타임 아웃 동안 수신측으로부터 ACK 데이터를 받지 못했을 경우, 마지막 ACK된 데이터부터 재전송합니다. 
+
+        ![image](https://user-images.githubusercontent.com/88185304/150266522-937a438a-96f9-4934-a420-8a34f0736d7f.png)
+
+    - 정리 
+        - 전송측은 NAK 프레임을 받았을 경우, NAK 프레임 번호부터 데이터를 재전송합니다.
+        - 수신측은 원하는 프레임이 아닐 경우, 데이터를 모두 폐기 처분합니다.
+        - 타임아웃(ACK 분실)의 경우, 마지막 ACK된 데이터부터 재전송합니다.
+
+- SR(Selective-Reject) ARQ
+    - GBn ARQ의 확인된 마지막 프레임 이후의 모든 프레임을 재전송하는 단점을 보완하는 기법입니다.
+    - SR ARQ는 손상되거나 손실된 프레임만 재전송합니다.
+    - 그렇기 때문에 별도의 데이터 재정렬을 수행해야 하며, 별도의 버퍼를 필요로 합니다.
+    - 수신 측에 버퍼를 두어 받은 데이터의 정렬이 필요합니다.
+
+
+#### 문제점
+
+    - 전송의 신뢰성은 보장하지만, 매번 connect을 해서 시간 손실이 발생합니다. (3-way-handshake)
+    - 패킷을 조금만 손실해도 재전송 과정이 진행됩니다.
+
+
+### UDP(User Datagram Protocol)
+
+#### UDP란?
+
+- TCP보다 신뢰성이 떨어지지만 전송 속도가 일반적으로 빠른 프로토콜입니다. 
+- 3 way-handshake와 같은 연결과정이 진행되지 않습니다. 단방향 통신을 합니다.
+- 비교적 데이터의 신뢰성이 중요하지 않을 때 사용합니다. (ex 유튜브 동영상 스트리밍)
+- Error Detction
+- 서로 연결된 네트워크를 통해 패킷 데이터그램을 전달하는 목적으로 사용합니다. 
+
+#### UDP Header
+
+![image](https://user-images.githubusercontent.com/88185304/150261633-34d5b022-ce89-412e-a261-9557f7f287fb.png)
+
+- Length : UDP Header(8 byte) 와 Data 의 길이를 합한 값입니다.
+- Checksum : 데이터 오류 검사할 때 사용합니다.
 
 </br></br>
 
@@ -172,3 +341,15 @@ OSI 7계층 보다 조금 간소화된 모델이라고 볼 수 있습니다. 그
 - https://velog.io/@inyong_pang/OSI-7-%EA%B3%84%EC%B8%B5%EA%B3%BC-TCPIP-%EA%B3%84%EC%B8%B5
 - https://ko.gadget-info.com/difference-between-tcp-ip
 - https://www.stevenjlee.net/2020/02/09/%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-osi-7%EA%B3%84%EC%B8%B5-%EA%B7%B8%EB%A6%AC%EA%B3%A0-tcp-ip-4%EA%B3%84%EC%B8%B5/
+- https://www.youtube.com/watch?v=ikDVGYp5dhg
+- https://brainbackdoor.tistory.com/124
+- https://roka88.dev/114
+- https://velog.io/@jsj3282/TCP-%ED%9D%90%EB%A6%84%EC%A0%9C%EC%96%B4%ED%98%BC%EC%9E%A1%EC%A0%9C%EC%96%B4-%EC%98%A4%EB%A5%98%EC%A0%9C%EC%96%B4
+
+
+
+
+
+
+
+
