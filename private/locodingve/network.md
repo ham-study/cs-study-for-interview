@@ -32,6 +32,9 @@
     - [UDP](###UDP(User-Datagram-Protocol))
         - [UDP란?](####DUP란?)
         - [UDP Header](####UDP-Header)
+3. [IPv4 VS IPv6](#IPv4-VS-IPv6)
+
+
 <br>
 
 # OSI 모델와 TCP/IP 모델
@@ -331,6 +334,53 @@ OSI 7계층 보다 조금 간소화된 모델이라고 볼 수 있습니다. 그
 
 </br></br>
 
+# IPv4 VS IPv6
+
+### IP Address 
+- 정의
+    - 컴퓨터 네트워크에 연결된 각 장치에 할당된 고유 식별자입니다.
+
+- public ip 와 private ip
+
+    ![image](https://user-images.githubusercontent.com/88185304/150715146-b188ebb1-28c6-472b-a0e5-6690871b9371.png)
+
+
+
+### IPv4
+
+![image](https://user-images.githubusercontent.com/88185304/150716056-eb941dfb-d8d0-40f4-a36b-9011506fbb0f.png)
+
+- IPv4의 주소 길이는 32비트입니다.	
+- 수동 및 DHCP 주소 구성을 지원합니다.
+- 4.29×10^9 주소 공간 을 생성할 수 있습니다.
+- 보안 기능은 애플리케이션에 따라 다릅니다.
+- IPv4의 주소 표현은 10진수입니다.
+- 브로드캐스트 메시지 전송 방식이 있습니다.
+- IPv4에서 암호화 및 인증 기능이 제공되지 않음
+- IPv4의 헤더는 20-60바이트입니다.
+
+### IPv6
+
+![image](https://user-images.githubusercontent.com/88185304/150716849-3c03a7b8-24b4-49a2-9aa0-f26e19ea8aaf.png)
+
+![image](https://user-images.githubusercontent.com/88185304/150717330-e3ce4e6a-abbe-4b77-abd6-0a3b58cd0977.png)
+
+- IPv6의 주소 길이는 128비트입니다.
+- 자동 및 번호 재지정 주소 구성을 지원합니다.
+- IPv6의 주소 공간은 상당히 커서 3.4×10^38 주소 공간 을 생성할 수 있습니다.
+- IPSEC는 IPv6 프로토콜에 내장된 보안 기능입니다.
+- IPv6의 주소 표현은 16진수입니다.
+- IPv6에서는 체크섬 필드를 사용할 수 없습니다.
+- IPv6에서는 암호화 및 인증이 제공됩니다. 
+- IPv6에는 40바이트의 헤더가 고정되어 있습니다. 
+
+
+
+
+
+
+
+<br><br>
 
 ## 출처
 - https://www.youtube.com/watch?v=aTPy201F0AA
@@ -345,7 +395,8 @@ OSI 7계층 보다 조금 간소화된 모델이라고 볼 수 있습니다. 그
 - https://brainbackdoor.tistory.com/124
 - https://roka88.dev/114
 - https://velog.io/@jsj3282/TCP-%ED%9D%90%EB%A6%84%EC%A0%9C%EC%96%B4%ED%98%BC%EC%9E%A1%EC%A0%9C%EC%96%B4-%EC%98%A4%EB%A5%98%EC%A0%9C%EC%96%B4
-
+- https://www.geeksforgeeks.org/differences-between-ipv4-and-ipv6/
+- https://www.youtube.com/watch?v=EDAnsWpOjGM&list=PLF1hDMPPRqGxpYdo0ctaa7MxfOi9vjs1u&index=8
 
 
 
