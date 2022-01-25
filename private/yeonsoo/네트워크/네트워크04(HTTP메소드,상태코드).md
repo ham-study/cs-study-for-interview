@@ -65,10 +65,10 @@
 
 
 
-### PACTH
+### PATCH
 
 - 리소스 부분 변경
-- PACTH를 지원하지 않는 경우 POST를 사용하면 된다.
+- PATCH 지원하지 않는 경우 POST를 사용하면 된다.
 
 
 ### DELETE
