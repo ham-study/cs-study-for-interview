@@ -1,4 +1,4 @@
-1. spring springbuffer springbuilder
+1. string stringbuffer stringbuilder
 2. 왜 개발자로 전향했나?
 3. restapi , method
 4. ssl은 어떤 거 적용했느냐
