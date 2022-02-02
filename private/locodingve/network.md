@@ -56,7 +56,13 @@
     - [비동기 작업](###비동기-작업)
     - [HATEOAS를 사용하여 관련 리소스 탐색](###HATEOAS를-사용하여-관련-리소스-탐색)
     - [REST API 버전 관리](###REST-API-버전-관리)
-    
+8. [Web Server vs WAS](#Web-Server-vs-WAS)
+9. [CORS](#CORS)
+10. [COOKIE & SESSION](#COOKIE-&-SESSION)
+11. [JWT](#JWT)
+12. [Load balancer](#Load-balancer)
+13. [DNS](#DNS)
+14. [Nonblocking&Synchronous/Asynchronous](#Nonblocking&Synchronous/Asynchronous)
 <br>
 
 # OSI 모델와 TCP/IP 모델
@@ -756,7 +762,37 @@ A. 그것은 공개키 방식이 많은 컴퓨터 파워를 사용하기 때문�
 
     {"id":3,"name":"Contoso LLC","address":"1 Microsoft Way Redmond WA 98053"}
     ```
+
 <br><br>
+
+# Web Server vs WAS
+
+<br><br>
+
+# CORS
+
+<br><br>
+
+# COOKIE & SESSION
+
+<br><br>
+
+# JWT
+
+<br><br>
+
+# Load balancer
+
+<br><br>
+
+# DNS
+
+<br><br>
+
+# Nonblocking&Synchronous/Asynchronous
+
+<br><br>
+
 
 ## 출처
 - https://www.youtube.com/watch?v=aTPy201F0AA
