@@ -61,8 +61,20 @@
 10. [COOKIE & SESSION](#COOKIE-&-SESSION)
 11. [JWT](#JWT)
 12. [Load balancer](#Load-balancer)
+    - [로드밸런싱이란?](###로드밸런싱이란?)
+    - [로드밸런서의 종류](###로드밸런서의-종류)
+    - [로드밸런서의 주요 기능](###로드밸런서의-주요-기능)
+    - [로드밸런서가 서버를 선택하는 방법](###로드밸런서가-서버를-선택하는-방법)
 13. [DNS](#DNS)
-14. [Nonblocking&Synchronous/Asynchronous](#Nonblocking&Synchronous/Asynchronous)
+    - [DNS란?](###DNS란?)
+    - [웹 페이지 로드와 관련한 4개의 서버](###웹-페이지-로드와-관련한-4개의-서버)
+    - [DNS 조회의 단계](###DNS-조회의-단계)
+    - [DNS 캐싱](###DNS-캐싱)
+14. [Blocking/Nonblocking & Synchronous/Asynchronous](#Blocking/Nonblocking-&-Synchronous/Asynchronous)
+    - [정의](###정의)
+    - [구분방법](###구분방법)
+    - [종류](###종류)
+
 <br>
 
 # OSI 모델와 TCP/IP 모델
@@ -783,13 +795,138 @@ A. 그것은 공개키 방식이 많은 컴퓨터 파워를 사용하기 때문�
 
 # Load balancer
 
+### 로드밸런싱이란?
+- 컴퓨터 네트워크 기술의 일종으로 둘 혹은 셋이상의 중앙처리장치 혹은 저장장치와 같은 컴퓨터 자원들에게 작업을 나누는 것을 의미합니다.
+- 즉 여러 서버가 분산 처리 하는것을 로드 밸런싱이라고 합니다.
+
+### 로드밸런서의 종류
+- L4 : Transport 계층을 사용, **IP 주소와 포트 번호** 부하 분산이 가능
+- L7 : Application 계층을 사용, **URL** 또는 HTTP 헤더에서 부하 분산이 가능
+
+
+### 로드밸런서의 주요 기능
+- Network Address Translation(NAT): Private IP를 Public IP로 바꾸는 기능
+- Tunneling: 데이터를 캡슐화하여 연결된 노드만 캡슐을 해제할 수 있게 하는 기능
+- Dynamic Source Routing protocol(DSR): 요청에 대한 응답을 할 때 로드밸런서가 아닌 클라이언트의 IP로 응답하는 기능
+
+### 로드밸런서가 서버를 선택하는 방법
+
+- Round Robin
+    요청이 들어오는 대로 서버마다 **균등하게** 요청을 분배합니다. 가장 단순한 분배 방식입니다.
+
+ - Weighted Round Robin Scheduling
+    **Round Robin방식으로 분배하지만 서버의 가중치에 따라** 요청을 더 분배하기도, 덜 분배하기도 합니다. **서버 가중치는 사용자가 지정할 수 있고 동적으로 조정되기도** 합니다.
+
+ - Least Connection
+    서버마다 연결된 커넥션이 몇개인지 체크하여 **커넥션이 가장 적은 서버로** 요청을 분배하는 방식입니다.
+
+ - Weighted Least Connections
+    **Least Connection방식으로 분배하지만 서버 가중치에 따라** 요청을 더 분배하기도, 덜 분배하기도 합니다. 서버 가중치는 사용자가 지정할 수 있고 동적으로 조정되기도 합니다. 서버 풀에 존재하는 서버들의 사양이 일관적이지 않고 다양한 경우 이 방법이 효과적입니다.
+
+ - Fastest Response Time
+    서버가 요청에 대해 **응답하는 시간을 체크하여 가장 빠른 서버로** 요청을 분배하는 방식입니다.
+
+ - Source Hash Scheduling
+    **사용자의 IP를 해싱한 후 그 결과에 따라 서버로** 요청을 분배합니다. 사용자의 IP는 고정되어 있기 때문에 항상 같은 서버로 연결된다는 보장을 받을 수 있습니다.
+
+
 <br><br>
 
 # DNS
 
+### DNS란?
+DNS(Domain Name System)는 인터넷 전화번호부입니다. 인간 은 nytimes.com 또는 espn.com과 같은 도메인 이름 을 통해 온라인으로 정보에 액세스합니다. 웹 브라우저는 인터넷 프로토콜(IP) 주소를 통해 상호 작용합니다. DNS는 브라우저가 인터넷 리소스를 로드할 수 있도록 도메인 이름을 IP 주소 로 변환합니다.
+
+인터넷에 연결된 각 장치에는 다른 기계가 장치를 찾는 데 사용하는 고유한 IP 주소가 있습니다. DNS 서버는 192.168.1.1(IPv4의 경우)과 같은 IP 주소 또는 2400:cb00:2048:1::c629:d7a2(IPv6의 경우)와 같은 보다 복잡한 새로운 영숫자 IP 주소를 기억할 필요가 없습니다.
+
+### 웹 페이지 로드와 관련한 4개의 서버
+
+![image](https://user-images.githubusercontent.com/88185304/152281523-2ed5d069-993e-4d26-beb4-e0dfdeec7768.png)
+
+- DNS recursor
+    재귀 확인자(DNS 리커서라고도 함)는 DNS 쿼리의 첫 단계입니다. 재귀 확인자는 클라이언트와 DNS 네임서버 사이의 중개자 역할을 합니다. 재귀 확인자는 웹 클라이언트로부터 DNS 쿼리를 받은 후 캐시된 데이터로 응답하거나 요청을 루트 네임서버로 보내고 또 다른 요청을 TLD 네임서버로 보낸 후 마지막 요청을 권한 있는 네임서버로 보냅니다. 재귀 확인자는 요청된 IP 주소가 있는 권한 있는 네임서버로부터 응답을 받은 후 응답을 클라이언트에 보냅니다.
+
+    이 과정 중 재귀 확인자는 권한 있는 네임서버에서 받은 정보를 캐시합니다. 클라이언트가 다른 클라이언트가 최근에 요청한 도메인 이름의 IP 주소를 요청하면 확인자는 네임서버와의 통신 프로세스를 우회하고 캐시에서 요청한 레코드를 클라이언트에 전달할 수 있습니다.
+
+- Root nameserver
+    13개의 DNS 루트 네임서버가 모든 재귀 확인자에 알려져 있으며 이들은 재귀 확인자가 DNS 레코드를 요청하는 과정의 첫 단계입니다. 루트 서버는 도메인 이름을 포함한 재귀 확인자의 쿼리를 수용하며 루트 네임서버는 해당 도메인의 확장자(.com,. net, .org, etc.)에 따라 재귀 확인자를 TLD 네임서버에 보내 응답합니다. 루트 네임서버는 비영리 단체인 ICANN(Internet Corporation for Assigned Names and Numbers)이 관리합니다.
+
+    참고로, 루트 네임서버는 13개가 있는데, 이는 루트 네임서버 시스템에 13대의 컴퓨터만 있다는 의미는 아닙니다. 13가지 유형의 루트 네임서버가 있지만 전 세계에 각각의 사본이 다수 있으며, Anycast 라우팅을 사용하여 빠른 응답을 제공합니다. 루트 네임서버의 모든 인스턴스를 더한다면, 전체 서버 수는 632개입니다(2016년 10월 기준).
+
+- TLD server
+    TLD 네임서버는 .com, .net 또는 URL의 마지막 점 뒤에 오는 것 같은 일반적인 도메인 확장자를 공유하는 모든 도메인 이름의 정보를 유지합니다. 예를 들어 TLD 네임서버는 ‘.com’으로 끝나는 모든 웹사이트의 정보를 갖고 있습니다. 사용자가 google.com을 검색하는 경우 재귀 확인자는 루트 네임서버로부터 응답을 받은 후 쿼리를 .com TLD 네임서버에 보내고, 해당 네임서버는 해당 도메인의 권한 있는 네임서버(아래 참조)를 가리켜 응답합니다.
+
+    TLD 네임서버는 ICANN의 지사인 IANA(Internet Assigned Numbers Authority)가 관리합니다. IANA는 TLD 서버를 두 가지로 구분합니다.
+
+    - 일반 최상위 도메인: 국가별로 고유하지 않은 도메인으로, 가장 잘 알려진 일반적인 TLD에는 .com, .org, .net, .edu 및 .gov가 있습니다.
+    - 국가 코드 최상위 도메인: 여기에는 국가 또는 주와 관련된 모든 도메인이 포함됩니다. 예로는 .uk, .us, .ru 및 .jp가 포함됩니다.
+
+- Authoritative nameserver 
+    재귀 확인자가 TLD 네임서버로부터 응답을 받으면, 확인자는 해당 응답을 권한 있는 네임서버로 보냅니다. 일반적으로 권한 있는 네임서버는 IP 주소를 확인하는 확인자의 마지막 단계입니다. 권한 있는 네임서버는 도메인 이름에 고유한 정보(예: google.com)를 포함하며 DNS A 레코드에서 찾은 도메인의 IP 주소를 재귀 확인자에 제공하거나, 도메인에 CNAME 레코드(별칭)가 있는 경우 재귀 확인자에 별칭 도메인을 제공하며, 이 때 재귀 확인자는 권한 있는 네임서버에서 레코드(종종 IP 주소를 포함하는 A 레코드)를 얻기 위해 완전히 새로운 DNS 조회를 수행해야 합니다. Cloudflare DNS는 Anycast 라우팅과 함께 제공되어 더욱 신뢰할 수 있는 권한 있는 네임서버를 배포합니다.
+
+### DNS 조회의 단계
+1. 사용자가 웹 브라우저에 'example.com'을 입력하면 쿼리가 인터넷으로 이동하고 DNS 재귀 해석기에 의해 수신됩니다.
+2. 그런 다음 확인자는 DNS 루트 이름 서버(.)를 쿼리합니다.
+3. 그런 다음 루트 서버는 해당 도메인에 대한 정보를 저장하는 최상위 도메인(TLD) DNS 서버(예: .com 또는 .net)의 주소로 확인자에 응답합니다. example.com을 검색할 때 요청은 .com TLD를 가리킵니다.
+4. 그런 다음 확인자는 .com TLD에 요청합니다.
+5. 그러면 TLD 서버는 도메인 이름 서버의 IP 주소인 example.com으로 응답합니다.
+6. 마지막으로 재귀 해석기는 도메인의 이름 서버에 쿼리를 보냅니다.
+7. 그러면 example.com의 IP 주소가 네임서버에서 해석기로 반환됩니다.
+8. 그런 다음 DNS 확인자는 처음에 요청한 도메인의 IP 주소로 웹 브라우저에 응답합니다. DNS 조회의 8단계가 example.com에 대한 IP 주소를 반환하면 브라우저는 웹 페이지를 요청할 수 있습니다.
+9. 브라우저는 IP 주소에 HTTP 요청을 합니다.
+10. 해당 IP의 서버는 브라우저에서 렌더링할 웹페이지를 반환합니다(10단계).
+
+### DNS 캐싱
+- 브라우저 DNS 캐싱
+- 운영 체제(OS) 수준 DNS 캐싱
+
 <br><br>
 
-# Nonblocking&Synchronous/Asynchronous
+# Blocking/Nonblocking & Synchronous/Asynchronous
+
+![image](https://user-images.githubusercontent.com/88185304/152256940-d312f064-95bf-4ba7-a1a5-ed23792f1a7d.png)
+
+### 정의
+- Blocking: 자신의 작업을 진행하다가 다시 주체가 작업이 시작되면 다른 작업이 끝날 때까지 **기다렸다가** 자신의 작업을 시작하는 것을 의미합니다. 
+- Nonblocking : 다른 추제의 작업에 **관련없이** 자신의 작업을 하는 것을 의미합니다.
+- Synchronous : 작업을 **동시에** 수행하거나, **동시에** 끝나거나, 끝나는 **동시에** 시작함을 의미합니다.
+- ASynchonous : 시작, 종료가 **일치하지 않으며**, 끝나는 동시에 시작을 하지 않음을 의미합니다. 
+
+### 구분방법
+    - Blocing/Nonblocking
+        - 제어권의 관점
+    - Synchronous/Asynchronous
+        - 순서와 결과(처리)의 관점
+
+### 종류
+
+- Synchronous/Blocking
+
+    ![image](https://user-images.githubusercontent.com/88185304/152258325-25bd5435-2ffc-4bbb-907c-c7bdc38d6ac3.png)
+
+    요청된 처리가 완료될 떄까지 기다려야하며, 처리가 완료되면 반환된 값을 가지고 다음 작업을 바로 수행합니다.
+
+
+- Synchronous/Nonblocking
+
+    ![image](https://user-images.githubusercontent.com/88185304/152258392-b97fec5b-b54a-47b5-8c33-f685fc014ed9.png)
+
+    처리한 작업을 요청하고, 어플리케이션이 할 작업을 합니다. 중간중간 요청된 처리가 완료되었는지 확인합니다. 만약 완료되었다면, 반환된 값을 가지고 다음 작업을 진행합니다. 
+
+- ASynchonous/Blocking
+
+    ![image](https://user-images.githubusercontent.com/88185304/152258467-21e6750c-b032-47dc-a1a5-92b5edcb4ef8.png)
+
+    요청된 처리에 대한 응답이 올 때까지 기다립니다. 그리고 응답이 오면, 해야했던 자신의 작업을 수행합니다. 
+
+- ASynchonous/Nonblocking
+
+    ![image](https://user-images.githubusercontent.com/88185304/152258525-910cf579-1f64-4def-9759-26f0eb65d6a2.png)
+
+    - 처리한 작업을 요청하고, 어플리케이션이 할 작업을 합니다. 요청된 작업이 완료되면, 완료 확인하고 자신이 해야했던 일을 수행합니다. 
+
+
+
 
 <br><br>
 
@@ -816,5 +953,11 @@ A. 그것은 공개키 방식이 많은 컴퓨터 파워를 사용하기 때문�
 - https://opentutorials.org/course/228/4894
 - https://docs.microsoft.com/ko-kr/azure/architecture/best-practices/api-design
 - https://www.ibm.com/kr-ko/cloud/learn/rest-apis
+- https://dev.classmethod.jp/articles/load-balancing-types-and-algorithm/
+- https://deveric.tistory.com/91
+- https://www.cloudflare.com/ko-kr/learning/dns/what-is-dns/
+- https://dbsl215.tistory.com/2
+
+
 
 
