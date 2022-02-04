@@ -103,24 +103,26 @@
     - OPT
     - LRU
 ## :pushpin: 데이터베이스
-- 관계형 데이터베이스
+- 관계형 데이터베이스(1)
   - 데이터베이스를 사용하는 이유
   - 관계형 데이터베이스의 개념과 장단점
   - DML, DDL, DCL
   - Key
-- Join
-- Sharding
-- 이상 현상과 정규화
-- 트랜잭션
+- Join(1)
+- Sharding&Master/Slave(2)
+- 이상 현상과 정규화(2)
+- 트랜잭션(3)
   - 트랜잭션 개념
   - ACID
   - LOCK
-- 교착상태
-- 인덱스
+- 트랜잭션 격리수준(3)
+- 교착상태(3)
+- 인덱스(4)
   - 인덱스 개념
   - Clustered index, Non-Clustered index
   - 인덱스 자료구조
-- NoSQL
+- NoSQL(5)
   - NoSQL의 개념
   - RDB VS NoSQL
+  - Redis
 ## :pushpin: 자료구조/알고리즘
