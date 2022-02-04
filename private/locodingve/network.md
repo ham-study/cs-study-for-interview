@@ -932,12 +932,15 @@ DNS(Domain Name System)는 인터넷 전화번호부입니다. 인간 은 nytime
 # 웹 통신의 흐름
 
 - 간단한 흐름
+
     ![image](https://user-images.githubusercontent.com/88185304/152461964-6c3daf68-4738-4e66-8687-e956cdf0b11d.png)
 
 - 좀 더 자세히 표현한 흐름 1
+
     ![image](https://user-images.githubusercontent.com/88185304/152466644-17942600-46c7-4a0f-87db-ae4c2a7fdf11.png)
 
 - 좀 더 자세히 표현한 흐름 2
+
     ![image](https://user-images.githubusercontent.com/88185304/152467374-68be356b-79de-4ee5-b5ae-512ef01480f7.png)
 
 <br><br>
