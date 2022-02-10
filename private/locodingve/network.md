@@ -74,6 +74,8 @@
     - [정의](###정의)
     - [구분방법](###구분방법)
     - [종류](###종류)
+15. [웹 통신의 흐름](#웹-통신의-흐름)
+
 
 <br>
 
@@ -925,8 +927,21 @@ DNS(Domain Name System)는 인터넷 전화번호부입니다. 인간 은 nytime
 
     - 처리한 작업을 요청하고, 어플리케이션이 할 작업을 합니다. 요청된 작업이 완료되면, 완료 확인하고 자신이 해야했던 일을 수행합니다. 
 
+<br><br>
 
+# 웹 통신의 흐름
 
+- 간단한 흐름
+
+    ![image](https://user-images.githubusercontent.com/88185304/152461964-6c3daf68-4738-4e66-8687-e956cdf0b11d.png)
+
+- 좀 더 자세히 표현한 흐름 1
+
+    ![image](https://user-images.githubusercontent.com/88185304/152466644-17942600-46c7-4a0f-87db-ae4c2a7fdf11.png)
+
+- 좀 더 자세히 표현한 흐름 2
+
+    ![image](https://user-images.githubusercontent.com/88185304/152467374-68be356b-79de-4ee5-b5ae-512ef01480f7.png)
 
 <br><br>
 
