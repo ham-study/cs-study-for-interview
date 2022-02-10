@@ -244,7 +244,7 @@ Index는 열 단위로 생성되는데, 하나의 열에 Index를 생성할 수 
  
 #### Clustered index
 
-Clustered Index를 따로 지정하지 않는 경우 테이블 생성시 하나의 열에 Primary Key를 지정하면 자동으로 Clustered Index가 생성된다.
+Clustered Index를 따로 지정하지 않는 경우, Clustered Index는 1순위로 PK키, 2순위로 Unique Key, 둘 다 없다면 6byte의 Hidden Key를 생성한다.
 
 해당 키 값을 기반으로 테이블이나 뷰의 데이터 행을 정렬하고 저장한다. 데이터 행 자체는 한 가지 순서로만 저장될 수 있으므로 테이블당 클러스터형 인덱스는 하나만 있을 수 있다. Index Page를(루트 페이지) 키값과 데이터 페이지(루트 페이지) 번호로 구성하고, 검색하고자하는 데이터의 키 값으로 페이지 번호를 검색하여 데이터(루트 페이지)를 찾는다.
 
