@@ -10,7 +10,6 @@ RDBMS의 형태가 아닌 비관계형 모델을 이용하는 데이터 저장�
 
 1. Key-Value 데이터 베이스
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e99215d9-f1fd-484d-b3eb-1c024318b2ea/Untitled.png)
     
     - 데이터가 key-value 쌍으로 저장된다.
     - value는 어떠한 형태의 데이터라도 담을 수 있다.
@@ -22,11 +21,7 @@ RDBMS의 형태가 아닌 비관계형 모델을 이용하는 데이터 저장�
     - 객체 지향에서의 객체와 유사하여 하나의 객체를 여러개의 테이블에 나눠 저장할 필요가 없다.
     - 객체를 document의 형태로 저장 가능하기 때문에 객체-관계 매핑이 필요하지 않다.
 3. Column-based 데이터 베이스
-    
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3312f083-7139-401e-880f-8608eff937a8/Untitled.png)
-    
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3c015092-2e37-43d4-9438-365a2b002558/Untitled.png)
-    
+
     - sql이 테이블의 데이터를 레코드 단위로 디스크내에 연속적으로 저장하는 것과는 달리 열별로 연속적으로 저장하는 것을 특징으로 한다.
     - ex) HBase, Hypertable
 4. Graph 데이터 베이스
