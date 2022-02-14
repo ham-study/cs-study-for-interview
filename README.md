@@ -126,13 +126,13 @@
   - RDB VS NoSQL
   - Redis
 ## :pushpin: 자료구조/알고리즘
-- 선형 자료구조
+- 선형 자료구조 (1)
   - Array
   - List
   - HashTable
   - Queue
   - Stack
-- 비선형 자료구조
+- 비선형 자료구조(2)
   - Graph
   - Tree
     - Binary Tree
@@ -143,8 +143,11 @@
   - Trie
   - AVL Tree
   - Red-Black Tree    
-- 정렬 알고리즘
+- 정렬 알고리즘(3)
   - 선택 정렬, 거품 정렬, 삽입 정렬
   - 병합 정렬, 퀵 정렬, 힙 정렬 
-- 이분 탐색
-- 동적계획법
+- 이분 탐색(4)
+- 동적계획법(4)
+- 최단 경로(4)
+- 최소 비용(MST)(4)
+## :pushpin: 자바/스프링
