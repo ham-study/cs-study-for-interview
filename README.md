@@ -126,3 +126,25 @@
   - RDB VS NoSQL
   - Redis
 ## :pushpin: 자료구조/알고리즘
+- 선형 자료구조
+  - Array
+  - List
+  - HashTable
+  - Queue
+  - Stack
+- 비선형 자료구조
+  - Graph
+  - Tree
+    - Binary Tree
+    - Full Binary Tree
+    - Complete Binary Tree
+    - Binary Search Tree  
+  - Heap
+  - Trie
+  - AVL Tree
+  - Red-Black Tree    
+- 정렬 알고리즘
+  - 선택 정렬, 거품 정렬, 삽입 정렬
+  - 병합 정렬, 퀵 정렬, 힙 정렬 
+- 이분 탐색
+- 동적계
