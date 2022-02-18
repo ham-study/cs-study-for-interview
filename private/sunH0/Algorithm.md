@@ -307,3 +307,132 @@ public static void swap(int[] array, int a, int b) {
 }
 ```
 
+## 이분 탐색
+정렬되어 있는 배열에서 특정 데이터를 검색할때 탐색 범위를 절반씩 줄여가며 찾아가는 Search 방법이다. 찾고자 하는 값이 속해 있지 않는 영역은 고려하지 않기 때문에, 매 단계에서 검색해야할 영역을 반으로 줄일 수 있다.
+
+### 시간복잡도
+전체 탐색 : O(N)
+이분 탐색 : O(logN)
+
+``` java
+	// 재귀적 탐색
+	static int binarySearch1(int key, int low, int high) {
+		int mid;
+		
+		if(low <= high) {
+			mid = (low + high) / 2;
+			
+			if(key == arr[mid]) { 
+				return mid;
+			} else if(key < arr[mid]) {
+				return binarySearch1(key ,low, mid-1); 
+			} else {
+				return binarySearch1(key, mid+1, high);
+			}
+		}
+		
+		return -1; 
+	}
+	
+	// 반복적 탐색
+	static int binarySearch2(int key, int low, int high) {
+		int mid;
+		
+		while(low <= high) {
+			mid = (low + high) / 2;
+			
+			if(key == arr[mid]) {
+				return mid;
+			} else if(key < arr[mid]) {
+				high = mid - 1;
+			} else {
+				low = mid + 1;
+			}
+		}
+		
+		return -1; 
+	}
+```
+
+
+## 동적 계획법(Dynamic Programming)
+하나의 큰 문제를 여러 개의 작은 문제로 나누어서 그 결과를 저장하여 다시 큰 문제를 해결할 때 사용하는 것
+전체 문제를 작은 문제로 단순화한 다음 점화식으로 만들어 재귀적인 구조를 활용해서 전체 문제를 해결하는 방식
+
+다음과 같은 경우 적합하다.
+1. 부분 문제 반복(작은 문제가 반복해서 발생하고 같은 상황이면 결과값은 같다.)
+2. 최적 부분 구조 조건(전체 문제의 최적해가 부분 문제의 최적해들로써 구성된다는 것)을 만족하는 경우
+
+가능한 모든 경우를 고려하는 알고리즘이지만, 결과적으로는 항상 최적의 해를 구할 수 있다.
+
+- Top-down : 큰 문제를 작은 문제로 쪼개면서 푼다. 재귀로 구현
+``` java
+int d[100];
+int fibonacci(int n) {
+    if (n <= 1) {
+    	return n;
+    } else {
+        if (d[n] > 0) {		
+            return d[n];	
+        }
+        d[n] = fibonacci(n-1) + fibonacci(n-2);
+        return d[n];
+    }
+}
+```
+- Bottom-up : 작은 문제부터 차례대로 푼다. 반복문으로 구현
+```java
+int d[100];
+int fibonacci(int n) {
+    d[0] = 0;
+    d[1] = 1;
+    for (int i=2; i<=n; i++) {	// 2에서 부터 시작해서 n까지 반복
+    	d[i] = d[i-1] + d[i-2];
+    }
+    return d[n];
+}
+```
+
+## 최단 경로
+그래프에서 간선의 가중치의 합이 최소가 되는 경로를 찾는 문제의 알고리즘이다.
+
+### 다익스트라 알고리즘 (Dijkstra Algorithm)
+DP를 활용한 최단 경로 탐색 알고리즘으로 하나의 시작 정점으로부터 모든 다른 정점까지의 최단 경로를 찾는 알고리즘이다.
+시작 정점으로부터 정점들의 최단 거리를 저장하는 배열과, 방문 여부를 저장한다.
+
+- 인접 행렬로 구현하면 시간 복잡도는 O(N^2)이다.
+- 인접 리스트, 힙(우선순위 큐)으로 구현하면 시간 복잡도는 O(N*logN)이다.
+
+### 플로이드 워셜 (Floyd-Warshall)  알고리즘 
+모든 노드에서 다른 모든 노드까지의 최단 경로를 모두 계산한다. 모든 노드 간의 최단거리를 구해야 하므로 2차원 인접 행렬을 구성
+
+플로이드 워셜 알고리즘의 총 시간 복잡도는 O(N^3) 이다.
+
+
+## 최소 비용 신장 트리(MST : Minimum Spanning Tree)
+spanning tree(신장 트리)는 그래프내의 모든 정점을 포함하고 사이클이 존재하지 않는 트리로서 n개의 노드가 있다면 n-1개의 edge를 갖는다. 하나의 그래프는 여러 종류의 spanning tree를 보유할 수 있다.
+
+mst는 spanning tree중 가중치의 합이 가장 적은 spanning tree를 말한다.
+
+### Kruskal's Algorithm 
+Greedy method 를 이용하여 그래프의 모든 정점을 최소 비용으로 연결하는 최적 해답을 구하는 알고리즘
+
+1. 그래프의 간선들을 가중치의 오름차순으로 정렬한다.
+2. 정렬된 간선 리스트에서 순서대로 간선을 선택한다.
+3. 사이클을 형성하는 간선은 제외한다. (union find사용)
+4. 간선의 수가 n-1개를 달성하면 작업이 종료
+
+시간 복잡도는 O(eloge)이다.
+  - 간선들을 정렬하는 시간에 따라 좌우된다.
+  - e는 간선의 개수이다.
+  
+### Prim MST 알고리즘
+시작 정점에서부터 출발하여 인접한 정점중 가중치가 최소인 정점을 탐색해가면서 신장트리 집합을 확장하는 방식
+
+1. 임의의 정점을 선택한다.
+2. 임의의 정점에 연결된 간선중 가중치가 최소인 간선을 찾고 해당되는 정점을 추가한다.
+3. 이미 저장된 정점은 고려 대상에서 제외하고 이 과정을 반복하여 정점을 모두 탐색했다면 종료한다.
+
+Prim의 알고리즘의 시간 복잡도는 배열로 구현시 O(v^2) 이 된고 우선순위 큐를 사용하면 O(ElogV)이다.
+- 그래프 내에 적은 숫자의 간선만을 가지는 ‘희소 그래프(Sparse Graph)’의 경우 Kruskal 알고리즘이 적합하고
+- 그래프에 간선이 많이 존재하는 ‘밀집 그래프(Dense Graph)’ 의 경우는 Prim 알고리즘이 적합하다.
