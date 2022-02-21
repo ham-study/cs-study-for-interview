@@ -140,43 +140,42 @@ public static void insertSort(int[] array) {
 - 레코드를 배열(Array)로 구성하면, 임시 배열이 필요하다.
 - 레코드의 길이가 길어질수록 이동 횟수가 많아져 비효율적이다. 
 ``` java
-public void mergeSort(int[] array, int left, int right) {
-    
-    if(left < right) {
-        int mid = (left + right) / 2;
-        
-        mergeSort(array, left, mid);
-        mergeSort(array, mid+1, right);
-        merge(array, left, mid, right);
+private static void mergeSort(int[] arr, int low, int high) {
+    if (high - low < 2) {
+        return;
     }
-    
+
+    int mid = (low + high) / 2;
+    mergeSort(arr, 0, mid);
+    mergeSort(arr, mid, high);
+    merge(arr, low, mid, high);
 }
 
-public static void merge(int[] array, int left, int mid, int right) {
-    int[] L = Arrays.copyOfRange(array, left, mid + 1);
-    int[] R = Arrays.copyOfRange(array, mid + 1, right + 1);
-    
-    int i = 0, j = 0, k = left;
-    int ll = L.length, rl = R.length;
-    
-    while(i < ll && j < rl) {
-        if(L[i] <= R[j]) {
-            array[k] = L[i++];
+private static void merge(int[] arr, int low, int mid, int high) {
+    int[] temp = new int[high - low];
+    int t = 0, l = low, h = mid;
+
+    while (l < mid && h < high) {
+        if (arr[l] < arr[h]) {
+            temp[t++] = arr[l++];
+        } else {
+            temp[t++] = arr[h++];
         }
-        else {
-            array[k] = R[j++];
-        }
-        k++;
     }
-    
-    // remain
-    while(i < ll) {
-        array[k++] = L[i++];
+
+    while (l < mid) {
+        temp[t++] = arr[l++];
     }
-    while(j < rl) {
-        array[k++] = R[j++];
+
+    while (h < high) {
+        temp[t++] = arr[h++];
+    }
+
+    for (int i = low; i < high; i++) {
+        arr[i] = temp[i - low];
     }
 }
+
 
 ```
 ### 퀵 정렬(Quick Sort)
@@ -203,44 +202,34 @@ Quick Sort은 불안정 정렬에 속하며, 다른 원소와의 비교만으로
 - 불안정 정렬(Unstable Sort) 이다.
 - 정렬된 배열에 대해서는 Quick Sort의 불균형 분할에 의해 오히려 수행시간이 더 많이 걸린다.
 ``` java
-public void quickSort(int[] array, int right, int left) {
-    if (right <= left) {
-      return;
+public static void quickSort(int[] arr, int left, int right) {
+    
+    if(right <= left) {
+        return;
     }
-    
-    /**
-    // 최악의 경우, 개선 방법
-    int mid = (left + right) / 2;
-    swap(array, left, mid);
-    */
-    
-    
+
     int r = right;
     int l = left;
-    int pivot = array[left];
-    
-    while (r >= l) {
-      while (array[l] < pivot) {
-        l++;
-      }
-      while (array[r] > pivot) {
-        r--;
-      }
-      if (r >= l) {
-        int temp = array[l];
-        array[l] = array[r];
-        array[r] = temp;
-        l++;
-        r--;
-      }
+
+    int pivot = arr[left];
+
+    while(r>=l){
+        
+        while(arr[r]>pivot) r--;
+        while(arr[l]<pivot) l++;
+
+        if(r>=l){
+            int temp = arr[r];
+            arr[r] = arr[l];
+            arr[l] = arr[r];
+            r--;
+            l++;
+        }
     }
-    
-    array[left] = array[l];
-    array[r] = pivot;
-    
-    quickSort(array, right, l);
-    quickSort(array, r, left);
-  }
+
+    quickSort(arr, left, r);
+    quickSort(arr, l,right);
+}
 ```
 
 
