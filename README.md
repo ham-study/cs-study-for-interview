@@ -18,29 +18,6 @@
   - 중도 하차 해도 괜찮으니 편하게 말씀해주세요
 - 카카오 뱅크 모임 관리 계좌로 투명하게 관리합니다.  
 
-## :pushpin: 네트워크
-- OSI 7계층과 TCP/IP 4계층(1)
-- TCP/UDP(2)
-  - 3way-handshake, 4way-handshake
-  - 흐름제어, 혼잡제어, 오류제어
-- IPv4 VS IPv6(3)
-- HTTP(4)
-  - HTTP status code
-  - HTTP METHOD
-- HTTP 1.1 VS HTTP 2.0(5)
-- HTTPS(5)
-- REST API(6)
-- Web Server VS WAS(7)
-- CORS(7)
-- COOKIE & SESSION(8)
-- JWT(8)
-- 로드밸런서(9)
-- DNS(9)
-- Blocking/Nonblocking&Synchronous/Asynchronous(9)
-- 웹 통신의 흐름(10)
-  - www.example.com을 입력했을 때?
-
-
 ## :pushpin: 운영체제
 - 운영체제 소개
   - 운영체제 필요성
@@ -102,6 +79,29 @@
     - FIFO
     - OPT
     - LRU
+
+## :pushpin: 네트워크
+- OSI 7계층과 TCP/IP 4계층(1)
+- TCP/UDP(2)
+  - 3way-handshake, 4way-handshake
+  - 흐름제어, 혼잡제어, 오류제어
+- IPv4 VS IPv6(3)
+- HTTP(4)
+  - HTTP status code
+  - HTTP METHOD
+- HTTP 1.1 VS HTTP 2.0(5)
+- HTTPS(5)
+- REST API(6)
+- Web Server VS WAS(7)
+- CORS(7)
+- COOKIE & SESSION(8)
+- JWT(8)
+- 로드밸런서(9)
+- DNS(9)
+- Blocking/Nonblocking&Synchronous/Asynchronous(9)
+- 웹 통신의 흐름(10)
+  - www.example.com을 입력했을 때?
+
 ## :pushpin: 데이터베이스
 - 관계형 데이터베이스(1)
   - 데이터베이스를 사용하는 이유
@@ -125,6 +125,8 @@
   - NoSQL의 개념
   - RDB VS NoSQL
   - Redis
+
+
 ## :pushpin: 자료구조/알고리즘
 - 선형 자료구조 (1)
   - Array
@@ -150,4 +152,43 @@
 - 동적계획법(4)
 - 최단 경로(4)
 - 최소 비용(MST)(4)
-## :pushpin: 자바/스프링
+
+
+## :pushpin: 자바
+
+- 객체지향
+   - 4가지 특징
+   - 5원칙 (SOLID)
+   - 객체지향 vs 절차지향 vs 함수형 프로그래밍
+- JDK, JRE, JVM
+   - 컴파일 과정
+   - 컴파일 언어 vs 인터프리터 언어
+   - JVM 메모리 구조
+   - Garbage Collector 동작과정
+   - Java8의 큰 특징 + Java11과의 차이점
+- Java 기초
+   - 접근제어자
+   - 클래스, 객체, 인스턴스 차이
+   - Overloading vs Overriding
+   - Primitive type vs Reference type
+      - Call by Reference vs Call by Value
+      - Wrapper Class
+   - interface vs abstract class 
+   - Checked Exception vs UnChecked Exception
+   - static
+   - final
+   - generic
+   - stream, lambda
+   - Reflection & Dynamic Proxy
+ - Java 컬렉션
+   - hashcode() & equals()
+   - Thread Safe & Syncronized
+   - String
+      - String vs StringBuffer vs StringBuilder 
+      - Immutable Object
+      - `String a = ""` vs `String a = new String("")`
+   - List
+      - ArrayList vs LinkedList
+   - Map
+      - HashTable vs HashMap vs LinkedHashMap vs TreeMap
+      - HashMap vs ConcurrentHashMap
