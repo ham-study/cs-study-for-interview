@@ -154,39 +154,46 @@
 - 최소 비용(MST)(4)
 
 
-## :pushpin: 자바
+## :pushpin: Java
 
 - 객체지향
+   - **--- 1일차 ---**
    - 4가지 특징
    - 5원칙 (SOLID)
    - 객체지향 vs 절차지향 vs 함수형 프로그래밍
 - JDK, JRE, JVM
+   - **--- 2일차 ---**
    - 컴파일 과정
    - 컴파일 언어 vs 인터프리터 언어
    - JVM 메모리 구조
    - Garbage Collector 동작과정
    - Java8의 큰 특징 + Java11과의 차이점
 - Java 기초
+   - **--- 3일차 ---**
    - 접근제어자
    - 클래스, 객체, 인스턴스 차이
    - Overloading vs Overriding
+   - **--- 4일차 ---**
    - Primitive type vs Reference type
       - Call by Reference vs Call by Value
       - Wrapper Class
    - interface vs abstract class 
    - Checked Exception vs UnChecked Exception
+   - **--- 5일차 ---**
    - static
    - final
    - generic
    - stream, lambda
    - Reflection & Dynamic Proxy
  - Java 컬렉션
+   - **--- 6일차 ---**
    - hashcode() & equals()
    - Thread Safe & Syncronized
    - String
       - String vs StringBuffer vs StringBuilder 
       - Immutable Object
       - `String a = ""` vs `String a = new String("")`
+   - **--- 7일차 ---**
    - List
       - ArrayList vs LinkedList
    - Map
