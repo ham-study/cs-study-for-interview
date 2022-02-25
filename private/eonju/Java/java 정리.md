@@ -87,7 +87,7 @@ public : 모두 허용
 
 ![img](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcfumdY%2Fbtq1JWpET04%2FKCZJkkOhSxNKmhpfNYRd3K%2Fimg.jpg)
 
-###interface vs abstract class
+### interface vs abstract class
 **공통점**
 Interface와 Abstract Class는 상속(extends)받거나, 구현(implements)하는 Class가
 Interface나 Abstract Class 안에 있는 **Abstract Method를 구현**하도록 강제하는 공통점을 가지고 있다.
@@ -96,9 +96,7 @@ Interface나 Abstract Class 안에 있는 **Abstract Method를 구현**하도록
 인터페이스는 여래개를 구현할 수 있는 반면, 추상 클래스는 여러개를 받아오지 못한다.
 상속은 슈퍼클래의 기능을 이용하거나 확장하기 위해서 사용되고, 다중상속의 모호성 때문에 하나만 상속받을 수 있다.
 
-
 ### Checked Exception vs UnChecked Exception
-
 **예외란?**  
 예외(Exception)란 입력 값에 대한 처리가 불가능하거나, 프로그램 실행 중에 참조된 값이 잘못된 경우 등 
 정상적인 프로그램의 흐름을 어긋나는 것
@@ -106,6 +104,7 @@ Interface나 Abstract Class 안에 있는 **Abstract Method를 구현**하도록
 ![img](https://madplay.github.io/img/post/2019-03-02-java-checked-unchecked-exceptions-1.png)
 
 **Checked Exception**
+- 컴파일 단계에서 나타나는 예외입니다.
 - 체크 예외는 RuntimeException의 하위 클래스가 아니면서 Exception 클래스의 하위 클래스들입니다.
 - 반드시 에러 처리를 해야하는 특징(try/catch or throw)을 가지고 있습니다.
 
