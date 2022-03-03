@@ -144,3 +144,69 @@ java.lang.Exception 클래스의 서브 클래스들은 Error와 달리 애플�
 - unchecked exception은 런타임시 확인되는 예외로서 RuntimeException을 상속 받는다. NullPointerException, IllegalArgumentException등이 포함된다. 주로 개발자들에 의해 실수로 발생하기 때문에 코드상에서 명시적으로 예외를 처리하지 않아도 실행가능하고 예외 발생시 트랜잭션시 rollback된다.
 
 +)  try catch로 처리가 명확하게 가능하면 exception 클래스를 확장해 처리하는게 좋지만, 일반적으로 실행시 예외를 처리할 수 있는 경우에는 RuntimeException 클래스를 확장해 Unchecked Exception을 사용하여 명확하게 메세지를 남기는 것이 더 좋은 방법일 수 있다.
+
+## hashcode() & equals()
+Java의 모든 객체는 Object 클래스에 정의된 equals와 hashCode 함수를 상속받고 있다.
+
+### equals()
+boolean equals(Object obj)로 정의된 equals 메소드는 2개의 객체의 동일성을 비교하는 메서드로 == 연산을 사용하여 객체의 주소 값을 비교한다.
+equals()는 일반적으로 Overriding될 수 있고 대표적인 예가 String 클래스에서 재정의 된 equals() 이다.
+
+### hashcode()
+public native int hashCode()로 정의된 hashCode 메소드는 객체의 고유한 주소 값을 해싱하여 정수로 표현하는 메서드를 의미한다.
+
++) native 키워드는 메소드가 JNI(Java Native Interface)라는 native code를 이용해 구현되었음을 의미한다. native는 메소드에만 적용가능한 제어자로, C or C++ 등 Java가 아닌 언어로 구현된 부분을 JNI를 통해 Java에서 이용하고자 할 때 사용된다.
+
+### equals와 hashCode의 관계
+동일한 객체는 동일한 메모리 주소를 갖는다는 것을 의미하므로, 동일한 객체는 동일한 해시코드를 가져야 한다. 따라서 equals() 메소드를 오버라이드 한다면, hashCode() 메소드도 오버라이드 되어야 한다.
+
+- 두 객체가 equals()에 의해 동일하다면, 두 객체의 hashCode() 값도 일치해야 한다.
+- hashCode(obj1) == hashCode(obj2) 라고 obj1.equals(obj2) == True일 필요는 없다.
+- 만약 ORM을(ex. JPA) 사용하고 있는 경우라면, hashCode와 equals를 오버라이드 하는 메소드 내부에서 Getter를 사용하기를 권장
+  - ORM에 의해 fields가 Lazy Loaded되어, getter를 부르기 전에는 사용이 불가능할 수 있기 때문
+  
+#### 같이 오버라이딩 해야 하는 이유
+Collection(HashMap, HashSet, HashTable)은 객체의 동등성을 비교할 때, hashCode 메서드의 리턴 값이 우선 일치하고 equals 메서드의 리턴 값이 true여야 논리적으로 같은 객체라고 판단한다. (hashCode 리턴값이 다를 경우 다른 객체라 판단한다.)
+
+하지만, 해시 테이블에서 해시 충돌이 발생하면 해당 버킷(Bucket)에 LinkedList 형태로 객체를 추가하기 때문에 다른 객체라도 같은 해시코드 값을 가질 수 있다.
+
+또한 collection에서 key값을 사용해 데이터를 insert할 때 hashcode()가 호출되는데, hashcode()를 overriding하지 않았다면 같은 내용의 객체가 서로 다른 버킷에 할당될 가능성이 있다. 즉, 같은 내용의 객체가 중복 저장되는 것이다.
+
++) Objects.hash 메서드는 hashCode 메서드를 재정의하기 위해 간편히 사용할 수 있는 메서드이지만 속도가 느리다. 인자를 담기 위한 배열이 만들어지고 인자 중 기본 타입이 있다면 박싱과 언박싱도 거쳐야 하기 때문이다. 성능에 민감한 프로그램인 경우 직접 재정의해주는 게 좋다.
+
+
+## Thread Safe & Syncronized
+
+## 자바스레드 구현 방법
+1. Runnable 인터페이스 구현
+	- 해당 클래스를 인스턴스화해서 Thread 생성자에 argument로 넘겨줘야 한다.
+    - 따로 오버라이딩 하지 않고 Runnable 인터페이스에서 구현한 run()을 사용할 수 있다.
+  
+2. Thread 클래스 상속
+	- 상속받은 클래스 자체를 스레드로 사용할 수 있다.
+둘다 run() 메소드를 오버라이딩 한다.
+
+#### run() 과 start()
+
+Java에는 콜 스택(call stack)은 실질적인 명령어들을 담고 있는 메모리로, 하나씩 꺼내서 실행시키는 역할을 한다. 즉, 스레드를 이용한다는 건, JVM이 다수의 콜 스택을 번갈아가며 명령어를 실행시키는 것이다.
+
+run() 메소드를 이용한다는 것은 main()의 콜 스택 하나만 이용하는 것으로 스레드 활용이 아니다, 
+start() 메소드를 호출하면, JVM은 알아서 스레드를 위한 콜 스택을 새로 만들어주고 context switching을 통해 스레드답게 동작하도록 해준다.
+-> start()는 스레드가 작업을 실행하는데 필요한 콜 스택을 생성한 다음 run()을 호출해서 그 스택 안에 run()을 저장할 수 있도록 해준다.
+
+### Syncronized (동기화)
+
+Synchronized는 동기화를 위한 키워드로서 lock을 걸어 여러 스레드가 대상에 동시에 접근하는 상황을 방지한다.
+임계영역을 지정하고, 임계영역을 가지고 있는 lock을 단 하나의 스레드에게만 허용한다.
+
+- Synchronized method는 함수와 자신이 포함된 객체에 lock을 건다.
+- Synchornized block은 필요한 부분만 동기화처리를 해줄 수 있다.
+- 부모 클래스의 메소드에 synchronized 키워드로 임계영역을 설정해주면, 서로 다른 두 자식 객체가 오버라이딩 한 동기화된 메소드를 사용할 수 있다.
+
+#### wait()과 notify()
+- wait() : 스레드가 lock을 가지고 있으면, lock 권한을 반납하고 대기하게 한다.
+- notify() : 대기 상태인 스레드 중 하나를 깨운다.
+- notifyAll() : WAIT SET에 있는 모든 Thread 가 깨어난다.
+
+위 메소드는 동기화 된 영역(임계 영역)내에서 사용되어야 한다.
+
