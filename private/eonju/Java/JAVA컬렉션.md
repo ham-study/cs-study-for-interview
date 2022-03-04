@@ -189,9 +189,12 @@ public void exampleMethod(){
 - key나 value값은 null이 허용되지 않는다.
 
 **충돌 해결 방법**
-1. Separate Chaining 방식 : Linked List를 이용하는 방식이다. 각 index에 데이타를 저장하는 Linked list 에 대한 포인터를 가지는 방식
-2. Open addressing 방식 : hash table array의 빈공간을 사용하는 방법
-
+1. Separate Chaining 방식 : 연결리스트나 트리 형태로 엔트리에 값을 이어 붙이는 방식
+2. Open addressing 방식 : hash table array의 빈 버킷을 찾아 저장하는 방식, 탐색시 비효율적
+   - 선형 탐색법 : 해시 충돌시 다음 버킷, 혹은 몇 개를 건너뛰어 데이터를 삽입
+   - 2차 검색법 : 원래 저장할 위치로부터 떨어진 영역을 차례대로 검색하여 첫번째 빈 영역에 키를 저장하는 방법
+   - 이중 해싱 : 해시 충돌시 다른 함수를 한번 더 적용한 결과를 이용
+   - 리사이징 : 새로운 배열에 기존 배열의 키를 새롭게 재 해싱
 
 #### LinkedHashMap
 - 순서가 있다.
