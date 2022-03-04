@@ -164,42 +164,65 @@ public void exampleMethod(){
   intern() 메소드는 주어진 문자열이 **String Constant Pool**에 존재하는 검색합니다.  
   만약 있다면 그 주소값을 반환하고 없다면 여기에 새로 하나 만들고 그 주소값을 반환해줍니다.
 
+
 ## List
 ### ArrayList vs LinkedList
 검색은 ArrayList가 메모리상 연속되어서 할당되어있기 때문에 효율적이다.
 하지만 삽입하거나 삭제 하는 등의 연산은 이전 노드와 다음 노드를 연결하면 됨으로 LinkedList가 더 효율적이다.
 
+
 ## Map
 특징 : 키(Key)와 값(Value)의 쌍(Pair)으로 이루어진 데이터의 집합입니다.
 
-### HashTable vs HashMap vs LinkedHashMap vs TreeMap
+
 #### HashMap
 - 정렬이 되어있지 않다. 즉, 일정한 순서가 없다.
 - key나 value값은 null이 허용된다.
 - key로 올 수 있는 타입은 integer, string, 객체 등이 가능하다.  
 - 객체를 key로 갖는 경우 hashcode()와 equals()를 재정의해줘야한다.
+- 비동기적이다.
+
 
 #### HashTable
 - get(), put() 메서드를 확인해보면 synchronized하게 구현
+- HashMap과 달리 비동기적(unsynchronized)이다.
+- key나 value값은 null이 허용되지 않는다.
+
+**충돌 해결 방법**
+1. Separate Chaining 방식 : Linked List를 이용하는 방식이다. 각 index에 데이타를 저장하는 Linked list 에 대한 포인터를 가지는 방식
+2. Open addressing 방식 : hash table array의 빈공간을 사용하는 방법
+
 
 #### LinkedHashMap
 - 순서가 있다.
 - 조회보다 삽입, 삭제가 효율적이다.
 
+
 #### TreeMap
 - red-black tree 구조를 구현한 것으로 정렬된 키(key)를 가지고 있다
+- red-black tree 규칙 : 왼쪽 < 부모 < 오른쪽
+
 
 #### HashTable vs HashMap
-Java Doc에 따르면: Hashtable이 비동기적(unsynchronized)이고 null을 허용하는 걸 제외하면,
-HashMap class는 Hashtable과 대략적으로 같다.
+- 동기화 유무
+  : HashTable 동기적, HashMap 비동기적
+cf) Hashtable은 모든 데이터 변경 메소드가 synchronized로 선언되어 있어서, 메소드 호출 전
+스레드 간의 동기화 lock을 통해 멀티 스레드 환경에서 data의 무결성을 보장해준다. (thread-safe)
 
-Hashtable은 모든 데이터 변경 메소드가 synchronized로 선언되어 있어서, 
-메소드 호출 전 스레드 간의 동기화 lock을 통해 멀티 스레드 환경에서 data의 무결성을 보장해준다. (thread-safe)
+- null 허용 유무
+  : HashTable 허용 안됨, HashMap 허용
+
 
 #### LinkedHashmap vs Hashmap
-HashMap의 결과와는 다르게 입력된 값의 순서를 유지한다.
+- 순서의 유무
+- 연산에서의 성능 차이
+  : HashMap은 순차적으로 데이터를 저장하는 반면 LinkedHashMap은 데이터들을 연결해주기 때문에
+    LinkedHashMap이 중간에 위치한 데이터를 접근하여 삽입, 수정, 삭제할 때는 속도면에서 더 유리합니다.
+
 
 ### HashMap vs ConcurrentHashMap
-HashMap과 같은 구조이지만 동기화가 보장되지 않는 HashMap을 보완한 것이 ConcurrentHashMap이다.
-하지만 HashMap과는 다르게 key와 value가 null값을 허용하지 않는다.
+- 동기화 유무
+  : HashMap 비동기적, ConcurrentHashMap 동기적
+- null 허용 유무
+  : HashMap null 허용, ConcurrentHashMap null 허용 안됨
 
