@@ -29,8 +29,9 @@ Object의 hashCode() 메소드는 **객체가 저장된 메모리의 번지수�
 ### Equals() vs ==
 
 **Eqauls** : 논리적으로 동등한가를 비교하는 것, 즉 참조값이 다르더라도 내부의 **값이 같은 경우 true를 반환**한다.  
+**재정의하지 않은 equals는 주소 값을 비교한다.**  
 String.equals()의 경우 내부의 값을 비교한다.  
-**==** : 객체의 **주소값을 비교**한다.
+**==** : 객체의 **주소값을 비교**한다.  
 
 ### primitive 타입이 == 비교를 통해 값 비교가 가능한 이유
 
@@ -45,6 +46,9 @@ Pool에 저장**되어있다. Stack의 **변수 선언부**는 해당 **Runtime 
 
 **Thread** : 메모리를 할당받아 실행 중인 프로그램을 프로세스라고 하는데 하나의 프로세스 내에서  
 해당 프로세스 내에서 하나의 실행 흐름을 쓰레드라고 합니다.
+
+- 특징
+1. 메모리를 공유한다. (코드, 데이터, 힙 영역 공유 - 스택, 레지스터 뺴고)
 
 **ThreadSafe** : 멀티 스레딩에서 일반적으로 어떤 함수나 변수, 혹은 객체가 **여러 스레드로부터 동시에 접근이 이루어져도 프로그램의 실행에 문제가 없음을
 뜻합니다.**
@@ -98,7 +102,7 @@ public void exampleMethod(){
     2. 메모리 접근의 동기화
        : 데이터 영역과 힙 영역과 같이 한 순간에 하나의 쓰레드만 접근하도록 하는 것이 메모리 접근에 대한 동기화
 
-- 문제점
+- 문제점 - 추가
 1. Synchronized 키워드를 너무 남발하면 오히려 프로그램 성능저하를 일으킬 수 있습니다.
 
 
@@ -157,7 +161,45 @@ public void exampleMethod(){
 #### String a = "" - 리터럴을 이용하는 방식
 
 - String을 리터럴로 선언하면 내부적으로 String의 intern() 메소드가 호출됩니다.  
-  intern() 메소드는 주어진 문자열이 String Constant Pool에 존재하는 검색합니다.  
+  intern() 메소드는 주어진 문자열이 **String Constant Pool**에 존재하는 검색합니다.  
   만약 있다면 그 주소값을 반환하고 없다면 여기에 새로 하나 만들고 그 주소값을 반환해줍니다.
 
+## List
+### ArrayList vs LinkedList
+검색은 ArrayList가 메모리상 연속되어서 할당되어있기 때문에 효율적이다.
+하지만 삽입하거나 삭제 하는 등의 연산은 이전 노드와 다음 노드를 연결하면 됨으로 LinkedList가 더 효율적이다.
+
+## Map
+특징 : 키(Key)와 값(Value)의 쌍(Pair)으로 이루어진 데이터의 집합입니다.
+
+### HashTable vs HashMap vs LinkedHashMap vs TreeMap
+#### HashMap
+- 정렬이 되어있지 않다. 즉, 일정한 순서가 없다.
+- key나 value값은 null이 허용된다.
+- key로 올 수 있는 타입은 integer, string, 객체 등이 가능하다.  
+- 객체를 key로 갖는 경우 hashcode()와 equals()를 재정의해줘야한다.
+
+#### HashTable
+- get(), put() 메서드를 확인해보면 synchronized하게 구현
+
+#### LinkedHashMap
+- 순서가 있다.
+- 조회보다 삽입, 삭제가 효율적이다.
+
+#### TreeMap
+- red-black tree 구조를 구현한 것으로 정렬된 키(key)를 가지고 있다
+
+#### HashTable vs HashMap
+Java Doc에 따르면: Hashtable이 비동기적(unsynchronized)이고 null을 허용하는 걸 제외하면,
+HashMap class는 Hashtable과 대략적으로 같다.
+
+Hashtable은 모든 데이터 변경 메소드가 synchronized로 선언되어 있어서, 
+메소드 호출 전 스레드 간의 동기화 lock을 통해 멀티 스레드 환경에서 data의 무결성을 보장해준다. (thread-safe)
+
+#### LinkedHashmap vs Hashmap
+HashMap의 결과와는 다르게 입력된 값의 순서를 유지한다.
+
+### HashMap vs ConcurrentHashMap
+HashMap과 같은 구조이지만 동기화가 보장되지 않는 HashMap을 보완한 것이 ConcurrentHashMap이다.
+하지만 HashMap과는 다르게 key와 value가 null값을 허용하지 않는다.
 
