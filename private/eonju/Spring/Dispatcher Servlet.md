@@ -4,6 +4,14 @@ Spring : Java 기반의 웹 애플리케이션 개발을 위한 오픈소스 프
 Spring MVC : 웹 애플리케이션 개발에 있어 MVC 패턴을 적용할 수 있도록 Spring에서 제공하는 프레임워크
 Spring Boot : Spring 설정들을 자동화하는 Spring 기반의 프레임워크
 
+**Spring vs SpringBoot**  
+a) Auto Configuration 자동 실행  
+b) 쉬운 의존성 관리  
+c) 내장 서버  
+
+**Spring vs SpringMVC**  
+[링크](https://velog.io/@hellonayeon/springmvc-vs-springboot)
+
 #### Spring
 **구조**
 ![img](https://t1.daumcdn.net/cfile/tistory/996CA6455B90B6CC4E)
