@@ -19,6 +19,22 @@
 ### 서블릿 실행 과정
 ![img](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbu3HKI%2Fbtq7BerRpgq%2FiI82e9Zf9XLSwklFLjsXpk%2Fimg.png)
 
+### JSP(Java Server Page)
+: Java 언어를 기반으로 하는 Server Side 스크립트 언어
+- HTML 코드에 Java 코드를 넣어 동적인 웹 페이지를 생성하는 웹 어플리케이션 도구
+
+- JSP의 내부 동작 과정
+1. JSP가 실행되면 WAS는 내부적으로 JSP 파일을 Java Servlet(.java)으로 변환한다.
+2. WAS는 이 변환한 Servlet을 동작하여 필요한 기능을 수행한다. 
+   - Servlet의 동작 (Servlet 이란 참고)
+     1) WAS는 사용자 요청에 맞는 적절한 Servlet 파일을 컴파일(.class 파일 생성)한다.
+     2) .class 파일을 메모리에 올려 Servlet 객체를 만든다.
+     3) 메모리에 로드될 때 Servlet 객체를 초기화하는 init() 메서드가 실행된다.
+     4) WAS는 Request가 올 때마다 thread를 생성하여 처리한다.
+     5) 각 thread는 Servlet의 단일 객체에 대한 service() 메서드를 실행한다.
+     6) service() 메서드는 요청에 맞는 적절한 메서드(doGet, doPost 등)를 호출한다. 
+3. 수행 완료 후 생성된 데이터를 웹 페이지와 함께 클라이언트로 응답한다.
+
 ## filter
 - 자바 서블릿에서 제공하는 기능으로 디스패처 서블릿(Dispatcher Servlet)에 요청이 전달되기 전/후에 url 패턴에 맞는 모든 요청에 대해 부가작업을 처리할 수 있는 기능을 제공
 - 디스패처 서블릿은 스프링의 가장 앞단에 존재하는 프론트 컨트롤러이므로, 필터는 스프링 범위 밖에서 처리가 되는 것이다.
