@@ -7,6 +7,7 @@
   - [WAS](#WAS)
   - [servlet 동작 과정](#servlet-동작-과정)
   
+
 ## Servlet
 ---
 java servlet은 웹서버 내부에서 클라이언트 요구에 맞춰 동적으로 반응하는 페이지인 처리를 위해 동작하는 자바 프로그램이다. servlet 컨테이너에 의해 실행되고 관리된다. 
@@ -98,7 +99,108 @@ servlet container는 http요청을 받아 servlet을 실행시키고 생명주�
 4. doGet(), doPost()메서드는 요청을 처리하여 HttpServletResponse 객체에 응답을 전달한다.
 5. 응답이 완료되면 HttpServletRequest, HttpServletResponse객체는 소멸된다.
 
-### filter
-서블릿으로 전달되는 클라이언트의 request 혹은 서블릿에서 클라이언트로 전달되는 response를 중간에 가로채서 특정한 작업(필터링)을 하기 위해 객체와 메서드를 정의해 둔 인터페이스다.
 
-가장 대표적인 예가 인코딩 작업
+
+
+
+  
+  
+ ## Spring vs SpringBoot
+  
+ ### Spring Framework
+ 자바 앤터프라이즈(자바 플랫폼) 개발을 위해 필요한 기능들을 포괄적으로 제공하는 오픈소스 경량급 애플리케이션 프레임워크이다.
+-  엔터프라이즈 개발 용이 : 개발자가 복잡하고 실수하기 쉬운 Low Level에 많이 신경 쓰지 않으면서 Business Logic
+개발에 전념할 수 있도록 해준다.
+- 경량급 프레임워크 : 단순한 웹컨테이너에서도 엔터프라이즈 개발의 고급기술을 대부분 사용할 수 있다.
+ 
+ +) java SE 와 EE
+ SE : 가장 대중적인 자바 플랫폼으로 자바 프로그래밍 언어의 핵심 api와 패키지를 제공한다.
+ EE :  Java SE 플랫폼을 기반으로 JSP, Servlet, JDBC 같은 웹 프로그래밍에 필요한 기능을 포함하고 대규모, 다계층 구조로 확장 가능하며 보안 네트워크 API 를 제공한다.
+ -> Spring은 Java EE의 많은 부분을 대체하고 개선하는 독립형 프레임 워크이다. 
+ 
+ #### Spring 장점
+스프링이 제공해주는 기능들을 통해 반복적인 코드를 줄이고 개발자는 비즈니스 로직에만 집중할 수 있기 때문에 생산성을 증가 
+
+- DI, IOC를 통해 재사용 및 유지보수가 용이한 코드를 작성할 수 있고, 확장성을 가진 코드를 설계할 수 있다
+- POJO 기반 구성 : 특정한 라이브러리나 컨테이너의 기술에 종속적이지 않게 자바 객체 를 사용할 수 있다.
+- 경량 Container : 객체의 라이프 사이클을 관리하며 스프링 컨테이너으로 부터 필요한 객체를 얻어올 수 있다.
+- Mybatis, Hibernate 등 데이터베이스 처리를 위한 ORM 프레임워크들과의 연동 지원
+- 아키텍처의 유연성
+  - AOP활용으로 Logging, Transaction, Security를 구현할 수 있습니다.
+  - 모듈식으로 독립적인 구성을 가지고 있습니다.
+
++) POJO는 객체지향 원리에 충실하면서, 특정 환경이나 규약에 종속되지 않고 필요에 따라 재활용될수 있는\
+방식으로 설계된 객체이다.
+
+ ### SpringBoot
+SpringBoot는 Spring Framework에서 사용하는 프로젝트를 간편하게 셋업할 수 있는 서브 프로젝트이다. 
+ 
+### Spring Framework와 SpringBoot의 차이
+
+1. 의존성 관리
+- Spring은 개발에 필요한 모듈의 의존성을 각각 설정해줘야 했으며, 각 모듈의 버전을 개발자가 하나하나 명시해줘야했다.
+-> SpringBoot는 프로젝트에 설정해야 할 다수의 의존성들을 포함한 spring-boot-starter를 통해 의존성 관리를 더 편리하게 해준다. (spring-aop, spring-jdbc 등등)
+- 의존성을 추가할 때 Spring에서는 버전을 개발자가 직접 명시해줬어야 했는데 SpringBoot는 버전을 명시할 필요없이 가장 적합한 버전을 설정해주는 것이 가능하다.
+
+2. Auto Configuration
+Spring 에서는 컴포넌트 스캔, bean 설정, Dispatcher Servlet 설정, View Resolver, JDBC 설정 등의 다양한 설정을 해야하지만 Spring Boot 기반으로 구성함으로써  @SpringBootApplication을 통해 자동설정을 해준다.
+
+db연결할때 datasource 설정을 매번 직접 bean을 생성했어야 했다
+
+3. 내장 WAS
+Spring으로 개발한 프로젝트를 배포하기 위해서는 웹어플리케이션이 압축된 war파일과 프로그램을 실행시킬 was가 필요했다.
+SpringBoot는 Tomcat이나 Jetty같은 내장 서버를 가지고 있기 때문에 was 설정을 할 필요가 없고 jar 파일로만 배포할 수 있다. 
+
+#### 결론
+비교적 규모가 작은 어플리케이션을 실행시키기위해 그보다 큰 WAS를 따로 설치하기엔 효율적이지 않다 이런 경우 SpringBoot를 쓰는게 적당하고 규모가 큰 웹사이트에 경우 임페디드 컨테이너에서 애플리케이션을 실행 시키는 것은 다소 불안해서 SpringMVC 형태로 만들어 WAS에 배포하는 스타일이 더 좋다.
+
+## Spring MVC
+business logic과 presentation logic을 분리하여, 각 역활에 집중할 수 있으며 의존관계를 벗어날 수 있게하는 개발 기법
+
+- Model : Business Logic 을 포함하고 뷰에 출력할 데이터를 담아두는 공간이다. 그래서 뷰는 내부에 데이터들이 어떻게 구성되었는지 신경쓰지 않고, 화면 렌더링에 집중할 수 있다.
+- Controller : 클라이언트(HTTP) 요청을 받아, 실제 업무를 수행하는 모델 컴포넌트를 호출한다. 모델이 업무 수행을 완료하면, 그 결과를 가지고 화면을 생성하도록 뷰에 전달한다.
+- View : 모델이 처리한 데이터나 그 작업 결과를 가지고 사용자에게 출력할 화면을 그리며, 실제로 HTML 을 생성하는 역할을 합니다.
+
+### MVC1 과 MVC2
+
+#### MVC1
+모든 클라이언트 요청과 응답을 JSP가 담당한다. 즉, JSP가 Controller 와 View 의 기능을 모두 담당하는 구조이다
+(jsp 페이지 안에서 로직 처리를 위해 자바코드가 함께 사용)
+
+장점 : 단순해서 작은 프로젝트에서 사용될 수 있다.
+단점 : 웹이 복잡해질수록 유지보수가 힘들어진다. (JSP 내에서 html, 자바코드 같이 사용)
+
+#### MVC2
+요청 결과를 출력해 주는 뷰의 역할을 jsp 가 담당하고, 흐름 제어와 비즈니스 로직 처리 요청하는 컨트롤러의 역할을 서블릿이 담당한다.
+
+구조가 복잡하지만 유지보수, 확장에 용이하다
+  
+### Spring MVC 동작과정
+![](https://images.velog.io/images/sunho6824/post/ca5d7824-7d2d-4cee-8295-868e24c372fa/image.png)
+  
+1. 클라이언트로부터 요청이 오면 dispatcher servlet에서 가로챕니다.
+2. dispatcher servlet은 HandlerMapping객체에게 요청URL에 대해 어떤 컨트롤러(handler)에서 처리해야할지 정보를 얻어옵니다.
+3. dispatcher servlet은 HandlerAdapter에게 요청을 위임하여 요청에 맞는 컨트롤러의 메서드를 실행시킵니다.
+4. 컨트롤러는 메서드의 실행 결과를 ModelAndView의 형태로 반환합니다
+5. dispatcher servlet은 view resolver로 부터 반환 값에 해당하는 view객체를 찾습니다.
+6. view객체는 해당하는 뷰(html, jsp, thyleaf)를 호출하고 model객체에 담긴 데이터를 가져와 화면에 표시합니다.
+
+
+### Spring MVC의 구조
+- DispatcherServlet : 서블릿 컨테이너 가장 앞단에서 HTTP 프로토콜로 들어오는 모든 요청을 가장 먼저 받아 적합한 컨트롤러에 위임해주는 프론트 컨트롤러
+
+  - 기존에는 web.xml에 서블릿을 모두 등록해줘야 했지만, 디스패처 서블릿이 모든 request를 핸들링하면서 작업을 편리하게 할 수 있다.
+  - 공통적으로 진행되야 할 작업들을 우선적으로 DispatcherServlet에서 처리해준다. (한글 인코딩)
+
+- HandlerMapping : 클라이언트의 request url을 어떤 컨트롤러가 처리해야 할 지 찾아서 Dispatcher Servlet에게 전달해주는 역할을 담당한다. -> 컨트롤러 상에서  @RequestMapping을 찾는다.
+
+- Controller :실질적인 요청을 처리하는 곳이다. Dispatcher Servlet이 프론트 컨트롤러라면, 이 곳은 백엔드 컨트롤러라고 볼 수 있다. 모델의 처리 결과를 담아 Dispatcher Servlet에게 반환해준다.
+
+- ModelAndView : Controller가 처리한 결과와 그 결과를 보여줄 View에 관한 정보를 담고 있는 객체이다.
+
+- ViewResolver : View 관련 정보를 갖고 실제 View를 찾아주는 역할을 합니다.
+
+- View : Controller가 처리한 결과값을 보여줄 View를 생성합니다.
+
+
+
