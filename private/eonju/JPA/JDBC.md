@@ -75,7 +75,6 @@
     1. Dependency 추가 (build.gradle 또는 pom.xml)
     2. DataSource 설정 (application.yml) - 데이터베이스로부터 커넥션을 얻기 위함
     3. property file을 활용한 datasource 설정
-    4.
 
 - Spring에서 DataSource 설정 과정
     1. DB와의 연결을 위한 DB Server에 관한 정보(Property)를 설정한다.
