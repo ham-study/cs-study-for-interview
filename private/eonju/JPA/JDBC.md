@@ -193,5 +193,9 @@
   2. 메소드 호출로 쿼리를 실행하는 것은 성능상 좋지 않습니다.
 
 - 프로젝트에서 Hibernate를 택한 이유?
-1. Spring Starter의 Data JPA의존성에는 Hibernate 구현체가 기본적으로 포함되어있어요.
-2. 다른 구현체에 비해 가장 JPA와 호환이 잘된다 생각해요.
+  1. Spring Starter의 Data JPA의존성에는 Hibernate 구현체가 기본적으로 포함되어있어요.
+  2. 다른 구현체에 비해 가장 JPA와 호환이 잘된다 생각해요.
+
+
+## JDBC vs JPA vs Spring JPA vs Spring Data JDBC vs Hibernate
+- 참고링크) [링크](https://skyblue300a.tistory.com/7)
