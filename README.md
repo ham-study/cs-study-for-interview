@@ -258,13 +258,26 @@
    - 고아객체
    - 단뱡향/양방향 매핑
    - N + 1 문제
-
+- 테스트 
+   - **--- 9일차 ---**
+   - DDD, TDD
+   - Junit4 vs Junit5
+   - 단위, 통합, 인수 테스트
+   - stub, mock
+   - SpringBoot 계층별 테스트 방법
+   - 테스트 커버리지 (JACOCO)
+   - 
 ## :pushpin: 기타
 
+- **--- 1일차 ---**
+- 어노테이션
 - POJO
-- TDD, DDD
+- jar vs war
 - Maven vs Gradle
+- **--- 2일차 ---**
+- Spring Security
+- **--- 3일차 ---**
+- Spring Resolver
+- Spring Async
 - 플랫폼, 프레임워크, 라이브러리 차이점
-- Spring Framework에서 사용되는 디자인패턴
-- 반응형 프로그래밍
 - Git을 쓰는 이유와 깃과 깃허브의 차이점
