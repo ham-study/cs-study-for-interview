@@ -81,60 +81,60 @@
     - LRU
 
 ## :pushpin: 네트워크
-- OSI 7계층과 TCP/IP 4계층(1)
-- TCP/UDP(2)
+- OSI 7계층과 TCP/IP 4계층
+- TCP/UDP
   - 3way-handshake, 4way-handshake
   - 흐름제어, 혼잡제어, 오류제어
-- IPv4 VS IPv6(3)
-- HTTP(4)
+- IPv4 VS IPv6
+- HTTP
   - HTTP status code
   - HTTP METHOD
-- HTTP 1.1 VS HTTP 2.0(5)
-- HTTPS(5)
-- REST API(6)
-- Web Server VS WAS(7)
-- CORS(7)
-- COOKIE & SESSION(8)
-- JWT(8)
-- 로드밸런서(9)
-- DNS(9)
-- Blocking/Nonblocking&Synchronous/Asynchronous(9)
-- 웹 통신의 흐름(10)
+- HTTP 1.1 VS HTTP 2.0
+- HTTPS
+- REST API
+- Web Server VS WAS
+- CORS
+- COOKIE & SESSION
+- JWT
+- 로드밸런서
+- DNS
+- Blocking/Nonblocking&Synchronous/Asynchronous
+- 웹 통신의 흐름
   - www.example.com을 입력했을 때?
 
 ## :pushpin: 데이터베이스
-- 관계형 데이터베이스(1)
+- 관계형 데이터베이스
   - 데이터베이스를 사용하는 이유
   - 관계형 데이터베이스의 개념과 장단점
   - DML, DDL, DCL
   - Key
-- Join(1)
-- Sharding&Master/Slave(2)
-- 이상 현상과 정규화(2)
-- 트랜잭션(3)
+- Join
+- Sharding&Master/Slave
+- 이상 현상과 정규화
+- 트랜잭션
   - 트랜잭션 개념
   - ACID
   - LOCK
-- 트랜잭션 격리수준(3)
-- 교착상태(3)
-- 인덱스(4)
+- 트랜잭션 격리수준
+- 교착상태
+- 인덱스
   - 인덱스 개념
   - Clustered index, Non-Clustered index
   - 인덱스 자료구조
-- NoSQL(5)
+- NoSQL
   - NoSQL의 개념
   - RDB VS NoSQL
   - Redis
 
 
 ## :pushpin: 자료구조/알고리즘
-- 선형 자료구조 (1)
+- 선형 자료구조
   - Array
   - List
   - HashTable
   - Queue
   - Stack
-- 비선형 자료구조(2)
+- 비선형 자료구조
   - Graph
   - Tree
     - Binary Tree
@@ -145,55 +145,48 @@
   - Trie
   - AVL Tree
   - Red-Black Tree    
-- 정렬 알고리즘(3)
+- 정렬 알고리즘
   - 선택 정렬, 거품 정렬, 삽입 정렬
   - 병합 정렬, 퀵 정렬, 힙 정렬 
-- 이분 탐색(4)
-- 동적계획법(4)
-- 최단 경로(4)
-- 최소 비용(MST)(4)
+- 이분 탐색
+- 동적계획법
+- 최단 경로
+- 최소 비용(MST)
 
 
 ## :pushpin: Java
 
 - 객체지향
-   - **--- 1일차 ---**
    - 4가지 특징
    - 5원칙 (SOLID)
    - 객체지향 vs 절차지향 vs 함수형 프로그래밍
 - JDK, JRE, JVM
-   - **--- 2일차 ---**
    - 컴파일 과정
    - 컴파일 언어 vs 인터프리터 언어
    - JVM 메모리 구조
    - Garbage Collector 동작과정
    - Java8의 큰 특징 + Java11과의 차이점
 - Java 기초
-   - **--- 3일차 ---**
    - 접근제어자
    - 클래스, 객체, 인스턴스 차이
    - Overloading vs Overriding
-   - **--- 4일차 ---**
    - Primitive type vs Reference type
       - Call by Reference vs Call by Value
       - Wrapper Class
    - interface vs abstract class 
    - Checked Exception vs UnChecked Exception
-   - **--- 5일차 ---**
    - static
    - final
    - generic
    - stream, lambda
    - Reflection & Dynamic Proxy
  - Java 컬렉션
-   - **--- 6일차 ---**
    - hashcode() & equals()
    - Thread Safe & Syncronized
    - String
       - String vs StringBuffer vs StringBuilder 
       - Immutable Object
       - `String a = ""` vs `String a = new String("")`
-   - **--- 7일차 ---**
    - List
       - ArrayList vs LinkedList
    - Map
@@ -203,13 +196,11 @@
 ## :pushpin: Design Pattern
 
 - 생성패턴
-   - **--- 1일차 ---**
    - 팩토리 메소드
    - 싱글톤
 - 구조패턴
    - 데코레이터
    - 프록시
-   - **--- 2일차 ---**
    - 어댑터
 - 행위패턴
    - 옵저버
@@ -218,18 +209,15 @@
 ## :pushpin: Spring
 
 - Servlet
-   - **--- 1일차 ---**
    - 개념
    - tomcat
    - filter
    - servlet container
    - 동작과정
 - Spring 기본
-   - **--- 2일차 ---**
    - Spring vs Spring MVC vs Spring Boot
       - MVC1 vs MVC2
    - dispatcher servlet
-   - **--- 3일차 ---**
    - IoC
    - DI
    - Bean, Component
@@ -237,29 +225,23 @@
    - Container
    - VO vs DTO vs DAO
 - Spring 심화
-   - **--- 4일차 ---**
    - AOP
       - JDK Dynamic Proxy
       - CGLIB
-   - **--- 5일차 ---**
    - interceptor 
       - filter와 차이점
    - Spring 전체 동작과정
 - JPA
-   - **--- 6일차 ---**
    - JDBC, Spring JDBC
    - Sql Mapper(MyBatis), ORM
    - JPA, Hibernate
-   - **--- 7일차 ---**
    - 영속성 컨텍스트
    - 즉시/지연 로딩
    - 프록시
-   - **--- 8일차 ---**
    - 고아객체
    - 단뱡향/양방향 매핑
    - N + 1 문제
 - 테스트 
-   - **--- 9일차 ---**
    - DDD, TDD
    - Junit4 vs Junit5
    - 단위, 통합, 인수 테스트
@@ -269,14 +251,11 @@
    - 
 ## :pushpin: 기타
 
-- **--- 1일차 ---**
 - 어노테이션
 - POJO
 - jar vs war
 - Maven vs Gradle
-- **--- 2일차 ---**
 - Spring Security
-- **--- 3일차 ---**
 - Spring Resolver
 - Spring Async
 - 플랫폼, 프레임워크, 라이브러리 차이점
