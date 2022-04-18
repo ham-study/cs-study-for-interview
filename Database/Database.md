@@ -155,6 +155,7 @@ Sharding&Master/Slave
     2. Exclusive Lock (배타 락) : 읽기 X, 쓰기 X
         - Write Lock이라고도 하는 베타락은 데이터를 변경할 때 사용하는 Lock입니다. 트랜잭션이 완료될 때까지 유지됩니다. Exclusive Lock이 끝나기
           전까지 어떠한 접근도 허용하지 않습니다. 이 Lock은 다른 트랜잭션이 수행되고 있는 데이터에 대해서 접근하여 Lock을 걸 수 없습니다.
+       
 - lock 전략
     1. optimistic (낙관적 락)
 
@@ -229,7 +230,7 @@ Sharding&Master/Slave
 ### Clustered index, Non-Clustered index
 
 - Clustered index
-    - Clustered Index는 테이블의 데이터를 지정된 컬럼에 대해 물리적으로 데이터를 재배열
+    - Clustered Index는 테이블의 데이터를 지정된 컬럼에 대해 *물리적으로 데이터를 재배열*
     - 범위 검색에 강력하다
     - 입력/수정/삭제 시에도 정렬을 수행하여 입력/수정/삭제 속도는 더 느리다.
     - 한 테이블당 하나만 존재한다.
