@@ -146,6 +146,7 @@
 
 3. Stack
     - 코드의 메소드 내에 있는 지역변수나 매개변수와 같은 임시적인 변수들을 저장하는 공간이다.
+    - 원시타입의 값들이 저장된다.
     - ex) Person p = new Person() → p는 Stack에 저장(주소값을 가진다) 실객체는 heap에 저장된다.
     - 쓰레드 별로 새로 생성된다.
 
@@ -469,4 +470,8 @@ public class Final_ex {
 7. java는 컴파일 과정이 어떻게 되나요?
 8. JVM과 JRE에 대해서 설명해주세요.
 9. JVM의 각 영역에 설명해주세요.
-10. 
+10. java는 call by value인가요? call by reference이가요?
+11. java가 Primitive type와 Reference type으로 나뉜 이유가 무엇인가요?
+    - null을 사용하거나 Generic타입을 사용해야하는 경우 Reference Type을 사용하는 것이 좋습니다.
+    - 하지만, 이런경우가 아닌 경우 Primitive type을 쓰는 것이 좋습니다.
+12. 
