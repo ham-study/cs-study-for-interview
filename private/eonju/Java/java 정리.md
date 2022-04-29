@@ -187,6 +187,7 @@
 - Serializable 인터페이스를 구현한 후에는 위와 같이 serialVersionUID라는 값을 지정해 주는 것을 권장
 - 반드시 static final long으로 선언해야 하며, 변수명도 serialVersionUID로 선언해 주어야 자바에서 인식을 할 수 있습니다.
 - serialVersionUID은 아무런 값이나 지정해주면 됩니다.
+
 ---
 
 ### 접근제어자
@@ -462,16 +463,87 @@ public class Final_ex {
 ## 예상질문
 
 1. 프로젝트에서 자바 언어를 사용하셨던데 이유가 있나요?
+
 2. OOP가 무엇인가요?
+
 3. 객체지향적이다라고 하셨는데 객체지향적으로 프로그래밍을 하려면 어떻게 해야하나요?
+
 4. 객체지향적인 프로그램 설계를 위해서 고민했던 경험이 있나요?
+
 5. 프로그래밍의 패러다임 중 절차지향 프로그래밍과 객체지향 프로그래밍의 차이를 알려주세요.
+
 6. 프로그래밍의 패러다임 중 함수형 프로그래밍에 대해서 설명해주세요.
+
 7. java는 컴파일 과정이 어떻게 되나요?
+
 8. JVM과 JRE에 대해서 설명해주세요.
+
 9. JVM의 각 영역에 설명해주세요.
+
 10. java는 call by value인가요? call by reference이가요?
+    - java는 call by value입니다.
+
 11. java가 Primitive type와 Reference type으로 나뉜 이유가 무엇인가요?
     - null을 사용하거나 Generic타입을 사용해야하는 경우 Reference Type을 사용하는 것이 좋습니다.
     - 하지만, 이런경우가 아닌 경우 Primitive type을 쓰는 것이 좋습니다.
-12. 
+
+12. java Object 클래스에 대해서 설명해주세요.
+    - Java Object 클래스는 최상위 클래스로 필드는 없고 메소드로만 이루어진 클래스입니다.
+    - 모든 클래스들이 이 Object 클래스를 상속받고 있어 모든 클래스에서 이 Object 메소드를 이용할 수 있습니다.
+    - Object 클래스의 대표적인 메소드로는 equals(), hashcode(), toString()이 있습니다.
+    - equals()는 객체가 서로 같은지 판별하여 true와 false 중 하나를 반환하는 메소드입니다.
+    - 처음에는 instanceOf를 사용해 타입을 검사하고 다른 경우 바로 false 반환합니다.
+    - 만약 같은 타입일 경우 두 객체가 같은지 비교하게 됩니다.
+    - object 클래스의 경우 처음에는 주소를 통해 객체를 비교하도록 되어있지만 재정의를 통해 객체 내부의 값을 비교하도록 바꿀 수 있습니다.
+    - hashcode()는 객체를 식별가능하도록 객체가 저장된 메모리의 주소값을 활용하여 해시 함수를 통해 만든 해시 코드입니다.
+    - HashSet, HashMap, Hashtable에서 사용되고, hashCode와 내부의 값이 동등하다면 같은 객체로 봅니다.
+    -
+13. String의 equals()는 어떻게 구현되어있나요?
+    - 먼저 동일성을 판단합니다. 즉 주소값을 비교해봅니다.
+    - 만일 다르다면 같은 String 타입이 들어왔는지 확인합니다.
+    - 그 후 같은 타입이라면 동등성을 비교하게됩니다.
+
+14. ==과 equals()의 차이점에 대해서 설명해주세요.
+    - equals 연산자는 재정의하지 않으면 내부적으로 == 연산자와 같은 로직을 수행하므로 차이가 없다. 따라서 equals 연산자는 각 객체의 특성에 맞게 재정의를 해야
+      동등성의 기능을 수행한다.
+
+15. equals와 hashcode를 재정의해야하는 이유에 대해서 설명해주세요.
+    - hashcode()를 재정의 하지 않으면 같은 값 객체라도 해시값이 다를 수 있다.
+    - 따라서 HashTable에서 해당 객체가 저장된 버킷을 찾을 수 없다.
+    - equals()를 재정의하지 않으면 hashcode()가 만든 해시값을 이용해 객체가 저장된 버킷을 찾을 수는 있지만 해당 객체가
+      자신과 같은 객체인지 값을 비교할 수 없기 때문에 null을 리턴하게 된다.
+
+16. String과 StringBuffer, StringBuilder의 차이점에 대해서 설명해주세요.
+    - String은 Immutable하고, StringBuffer와 StringBuilder는 Immutable하지 않습니다.
+      - 즉 String은 변하지 않는 객체이고, StringBuffer와 StringBuilder는 잘 변하지 않는 객체입니다.
+      - String 객체는 한번 생성되면 할당된 공간이 변하지 않습니다.
+      - 즉, +연산 또는 concat()을 사용해 뒤에 문자열을 덧붙이게 된다면 새로 String 객체가 생성됩니다.
+      - 문자열이 변하는 것이 아니라 Heap영역에 새로운 객체가 생성되게 되고 이를 참조하는 방식입니다.
+      - 기존의 객체는 GC에 의해서 수거의 대상이됩니다.
+      - 따라서, 많은 문자열 연산에서는 String이 불리합니다.
+    - StringBuffer와 StringBuilder는 동일한 문자열 객체 내부에서 문자열을 변경할 수 있어 ,
+      String에 비해서 많은 문자열 연산을 수행하기에 적합합니다.
+    - StringBuffer와 Stringbuilder는 같은 메소드를 제공합니다.
+    - 하지만 StringBuffer의 경우 멀티 스레드 환경에서 적합하고,
+    - Stringbuilder의 경우 단일 스레드 환경에서 적합합니다.
+
+17. Immutable Object란 무엇인가요?
+18. String a = "" vs String a = new String("")의 차이점은 무엇인가요?
+    - ""의 경우 새롭게 주소 공간을 생성하지 않는다.
+    - new의 경우 새롭게 주소 공간을 생성합니다.
+    - ""의 경우 String constant pool이란 곳에 저장,
+    - new의 경우 heap 영역에 저장됩니다.
+    
+19. ArrayList와 LinkedList의 차이점은 무엇인가요?
+    - ArrayList의 경우 데이터의 순서가 보장이 되지 않습니다.
+    - 하지만 LinkedList의 경우 데이터의 순서가 보장이 됩니다.
+    - 그리고 수정, 삭제가 빈번한 경우 LinkedList를 이용하는 것이 더 효율적입니다.
+    - LinkedList의 경우 데이터가 앞뒤 포인터를 가지고 있어 해당 데이터의 앞뒤 포인터를 찾아 수정해주면 되기 때문입니다.
+    - 만약 ArrayList의 경우 수정, 삭제가 일어난다면 값이 삽입된다면 인덱스를 하나씩 밀어줘야해 시간이 오래걸립니다.
+    
+20. HashTable와 HashMap와 LinkedHashMap와 TreeMap의 차이점에 대해서 설명해주세요.
+    - HashMap은 동기화 지원 X, HashTable 동기화 지원 O.
+    - HashMap은 key와 value 모두 null 허용, 순서 보장 X
+    - 하지만 동기화 지원을 위해서라면 비교적 최근에 등장한 ConcurrentHashMap을 사용하는 것을 권장하는 것으로 알고 있습니다.
+    - 
+21. HashMap와 ConcurrentHashMap의 차이점에 대해서 설명해주세요.

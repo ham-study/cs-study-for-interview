@@ -161,7 +161,7 @@ public void exampleMethod(){
 #### String a = "" - 리터럴을 이용하는 방식
 
 - String을 리터럴로 선언하면 내부적으로 String의 intern() 메소드가 호출됩니다.  
-  intern() 메소드는 주어진 문자열이 **String Constant Pool**에 존재하는 검색합니다.  
+  intern() 메소드는 주어진 문자열이 **Heap의 String Constant Pool**에 존재하는 검색합니다.  
   만약 있다면 그 주소값을 반환하고 없다면 여기에 새로 하나 만들고 그 주소값을 반환해줍니다.
 
 
@@ -228,4 +228,4 @@ cf) Hashtable은 모든 데이터 변경 메소드가 synchronized로 선언되�
   : HashMap 비동기적, ConcurrentHashMap 동기적
 - null 허용 유무
   : HashMap null 허용, ConcurrentHashMap null 허용 안됨
-
+[참조](https://pplenty.tistory.com/17)
