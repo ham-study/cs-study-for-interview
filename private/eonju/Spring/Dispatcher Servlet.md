@@ -13,10 +13,19 @@ c) 내장 서버
 [링크](https://velog.io/@hellonayeon/springmvc-vs-springboot)
 
 #### Spring
+
 **구조**
 ![img](https://t1.daumcdn.net/cfile/tistory/996CA6455B90B6CC4E)
 
 #### Spring MVC
+
+- 프론트 컨트롤러 패턴으로 구현되어 있습니다.
+- 프론트 컨트롤러가 Dispatcher Servlet입니다.
+- Dispatcher Servlet은 Spring MVC의 핵심입니다.
+- 이 Dispacher Servlet이 HandlerMapping 객체를 이용해 요청과 매핑되는 controller을 검색하고,
+- Handler Adapter가 요청에 맞는 ModleAndView를 반환합니다. 이때, 컨트롤러 사용하게 됩니다.
+- 그리고 받은 ModleAndView객체에서 View name에 맞는 이름을 검색하여 view를 만들어 반환하게 됩니다.
+
 - Model : 백그라운드에서 동작하며, 사용자가 원하는 데이터나 정보를 제공한다.
 - View : 사용자의 요청을 화면으로 출력한다.
 - Controller : 사용자의 요청을 처리하고, 그 요청에 따른 전체적인 흐름을 제어한다.
