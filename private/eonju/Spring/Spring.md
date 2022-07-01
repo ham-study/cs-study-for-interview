@@ -30,6 +30,9 @@
 
 ![img](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbu3HKI%2Fbtq7BerRpgq%2FiI82e9Zf9XLSwklFLjsXpk%2Fimg.png)
 
+**멀티스레딩에 따른 서블릿 동작**
+![img](https://user-images.githubusercontent.com/48986787/131533760-d7aeefcf-44ca-46a8-a929-71293c4d6aaa.png)
+
 ---
 
 ## Servlet Container
@@ -192,7 +195,8 @@ c) 내장 서버
     - 해결방법
         1. 정적 자원에 대한 요청과 애플리케이션에 대한 요청을 분리
         2. 애플리케이션에 대한 요청을 탐색하고 없으면 정적 자원에 대한 요청으로 처리
-
+           ![img](https://user-images.githubusercontent.com/73349375/174228190-fdbf7c4a-18bc-427f-8eee-5574f2321041.png)
+        
 ## JAR(Java Archive : 자바 아카이브)
 
 : 자바 클래스 파일들과 클래스에서 필요로 하는 리소스들을 하나의 파일로 모아서, 자바 플랫폼에 응용 소프트웨어나 라이브러리를 배포하기 위한 소프트웨어 패키지 파일 포맷입니다.
@@ -240,12 +244,13 @@ c) 내장 서버
 ## DI (Dependency Injection) : 의존성 주입
 
 - 각 객체간의 의존성을 컨테이너가 자동으로 연결해주는 것으로 개발자가 빈(Bean) 설정파일에 의존관계가 필요한 정보를 추가해주면 컨테이너가 자동적으로 연결해준다.
+- Spring 프레임워크에서는 Setter Injection, Constructor Injection 두 가지 방식이 있다.
 
 ### IoC 컨테이너
 
 : 모든 작업을 사용하는 쪽에서 제어하게 되면서 IoC 컨테이너에서 제어하게 되는데, 기본적으로 컨테이너는 객체를 생성하고 객체간의 의존성을 이어주는 역할을 한다.
-
-- Spring 프레임워크에서는 Setter Injection, Constructor Injection 두 가지 방식이 있다.
+- Application Context
+- Bean Factory
 
 ### 빈(Bean) 요청 시 처리 과정
 
@@ -318,22 +323,25 @@ injection을 사용하기 위해서 사용되는 가장 기본 어노테이션�
 
 - DTO(Data Transfer Object)
   : VO(Value Object)로 바꿔 말할 수 있는데 계층간 데이터 교환을 위한 자바빈즈를 말합니다.
+
 - DAO(Data Access Object)
   : Data Access Object의 약자로 간단히 Database의 data에 접근을 위한 객체입니다. Database에 접근을 하기위한 로직과 비즈니스 로직을 분리하기
   위해서 사용을 합니다.
+
 - 각 계층간 데이터 교환을 위한 객체를 DTO 또는 VO라고 부릅니다
 
 ---
 
 ## Spring AOP
 
-spring AOP에서는 인터페이스 유무에 따라 인터페이스 기반의 프록시 생성 시 Dynamic Proxy를 사용하고 인터페이스 기반이 아닐시 CGLib을 사용하는데 spring
+Spring AOP에서는 인터페이스 유무에 따라 인터페이스 기반의 프록시 생성 시 Dynamic Proxy를 사용하고 인터페이스 기반이 아닐시 CGLib을 사용하는데 spring
 boot AOP에서는 CGLib을 default로 사용한다고 한다.
 
 - 핵심로직이 구현된 메소드에 포함된 공통기능 코드를 제거할 수 있다.
 - 공통기능을 별도의 클래스에 정의하고, AOP 기능을 지원하는 컨테이너(우리는 Spring Container)를 활용해서 핵심기능이 실행될 때 공총기능이 같이 실행되도록 하는
   것이다.
 - 스프링 컨테이너는 AOP의 구현체다.
+- @Transactional은 spring aop로 동작한다.
 
 **장점**
 
@@ -393,7 +401,7 @@ boot AOP에서는 CGLib을 default로 사용한다고 한다.
 
 **스프링 프레임워크의 특징**
 
-- 경량컨테이너로 라이프사이클을 관리하고 필요한 객체를 스프링으로부터 받아옵니다.
+- 경량 컨테이너로 라이프사이클을 관리하고 필요한 객체를 스프링으로부터 받아옵니다.
 - DI지원하여 객체간의 의존관계 설정이 가능합니다.
 - AOP지원합니다.
 - POJO방식으로 자바객체는 특정한 인터페이스를 구현하고 클라스 상속이 필요치 않습니다.
@@ -403,4 +411,5 @@ boot AOP에서는 CGLib을 default로 사용한다고 한다.
 
 ---
 
+# 질의문답
 
